@@ -1,0 +1,10 @@
+ # conection to database
+ 
+ #HOST =''
+ #PORT=
+ # USER=''
+ # PASSWORD=''
+ # DATABASE= ''
+
+
+#=====
