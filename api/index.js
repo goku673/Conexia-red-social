@@ -8,21 +8,22 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
-const port: number = 3006;
+const port =  3007;
 
 
 
 
-const connection: Connection = createConnection({
-  host: String(process.env.HOST),
-  port: Number(process.env.PORT), // Convierte process.env.PORT a número
-  user: String(process.env.USER),
-  password: String(process.env.PASSWORD),
-  database: String(process.env.DATABASE),
+const connection= createConnection({
+  host: process.env.HOST,
+  port:process.env.PORT, // Convierte process.env.PORT a número
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database:process.env.DATABASE,
 });
 
 
-connection.connect((error: Error | null) => {
+
+connection.connect((error) => {
   if (error) {
     console.error('Error al conectar a la base de datos: ', error);
   } else {
@@ -37,5 +38,6 @@ connection.connect((error: Error | null) => {
     });
   }
 });
+
 
 
