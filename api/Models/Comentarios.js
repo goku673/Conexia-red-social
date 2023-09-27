@@ -8,9 +8,9 @@ export default (sequelize) => {
            allowNull :false,
            primaryKey :true,
          }, 
-         idPublicacion : {
-            type : DataTypes.UUID, // forane Key de una publicacion 
-         }, 
+         // idPublicacion : {
+         //    type : DataTypes.UUID, // forane Key de una publicacion 
+         // }, 
          idUser : { 
             type : DataTypes.UUID,
          },
