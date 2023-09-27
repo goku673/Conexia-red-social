@@ -1,4 +1,4 @@
-import  {DataTypes} from "sequelize";
+import  DataTypes from "sequelize";
 
 
 export default  (sequelize) => {
@@ -9,17 +9,10 @@ export default  (sequelize) => {
                    allowNull : false, 
                    defaultValue : DataTypes.UUIDV4,
                    }, 
-                idUser : {
-                    type : DataTypes.UUID,
-                   }, 
-
                 fecha : { 
                      type : DataTypes.DATE,
                      defaultValue: DataTypes.NOW,
                 }, 
-                idSeguidor : { 
-                    type : DataTypes.UUID;
-                }
 
          })
 }

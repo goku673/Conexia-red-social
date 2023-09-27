@@ -1,9 +1,6 @@
-import { Sequelize ,DataTypes} from "sequelize";
+import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
 dotenv.config();
-import path from "path";
-import { fileURLToPath } from "url";
-import fs from 'fs';
 import modeloComentario from "./Models/Comentarios.js";
 import modeloEmoticones from "./Models/Emoticones.js";
 import modeloMensaje from "./Models/Mensaje.js";
@@ -36,20 +33,60 @@ const Seguidor = modeloSeguidor(sequelize);
 const Usuario = modeloUsuario(sequelize);
 
 
-//  asociaones || modelo entidad relacion
-Usuario.hasMany(Publicacion,{  // un usuario tiene muchas publicaciones
-     foreignKey :"idUsuarioPublicacion"
-});
-Publicacion.belongTo(Usuario,{ //una publicacion le pertenece a un solo usuario;
-     foreignKey :"idUsuarioPublicacion"
-})
+//  asociaciones  || modelo entidad relacion
+
+// Asociaciones entre el Usuario y la Publicacion
+   Usuario.hasMany(Publicacion, {
+     foreignKey: "user_id", // La clave foránea en Publicacion que referencia a Usuario
+   });
+   Publicacion.belongsTo(Usuario, {
+     foreignKey: "user_id", // La clave foránea en Publicacion que referencia a Usuario
+   });
+   
+   
+   // Asociaciones entre el Comentario y la Publicacion y su Usuario
+   Usuario.hasMany(Comentario, {
+     foreignKey: 'idUser', // La clave foránea en Usuario que referencia a Comentario
+   })
+   Comentario.belongsTo(Usuario, {
+     foreignKey: 'idUser', // La clave foránea en Comentario que referencia a Usuario
+   });
+   Comentario.belongsTo(Publicacion, {
+     foreignKey: 'idPublicacion', // La clave foránea en Comentario que referencia a Publicacion
+   });
+
+   Publicacion.hasMany(Comentario, {
+     foreignKey: 'idPublicacion', // La clave foránea en Publicacion que referencia a Comentario
+   });
 
 
-Usuario.hasMany(Comentario,{// un usuario tiene muchos comentarios
-    foreignKey :"idPublicacion"
-})
-Comentario.belongsTo(Usuario,{
-   foreignKey : "idPublicacion"
-});
+    // Define la asociación para el emisor (usuario que envía el mensaje)
+  Mensaje.belongsTo(Usuario, {
+     as: "emisor",
+     foreignKey: "user_id_emisor", // Clave foránea que referencia al emisor
+   });
+   // Define la asociación para el receptor (usuario que recibe el mensaje)
+   Mensaje.belongsTo(Usuario, {
+     as: "receptor",
+     foreignKey: "user_id_receptor", // Clave foránea que referencia al receptor     
+   });
 
 
+   // Asociaciones entre Usuarios seguidos y seguidores
+  Seguidor.belongsTo(Usuario, {
+     as: "seguidor",
+     foreignKey: "user_id_seguidor", // Clave foránea que referencia al seguidor
+  })
+  Seguidor.belongsTo(Usuario, {
+     as: "seguido",
+     foreignKey: "user_id_seguido", // Clave foránea que referencia al seguido
+  }); 
+
+
+  // Asociones entre Emoticones y Publicaciones y su Usuario
+  Emoticon.belongsTo(Usuario, {
+     foreignKey: 'idUser', // La clave foránea en Emoticon que referencia a Usuario
+  })
+  Emoticon.belongsTo(Publicacion, {
+     foreignKey: 'idPublicacion', // La clave foránea en Emoticon que referencia a Publicacion
+  });
