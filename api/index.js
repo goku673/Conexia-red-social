@@ -1,43 +1,20 @@
-import express from 'express';
-import { Connection, createConnection } from 'mysql2';
-import dotenv from 'dotenv';
+const express = require('express');
+const { createConnection } = require('mysql2');
+const dotenv = require('dotenv');
+const {conn}  = require('./DB.js');
 dotenv.config();
+const servidor = require('./servidor.js');
+
+//const servidor = express();
+//servidor.use(express.json());
+const port = 3007;
 
 
-
-
-const app = express();
-app.use(express.json());
-const port =  3007;
-
-
-
-
-const connection= createConnection({
-  host: process.env.HOST,
-  port:process.env.PORT, // Convierte process.env.PORT a número
-  user: process.env.USER,
-  password: process.env.PASSWORD,
-  database:process.env.DATABASE,
+//---------------------Servidor iniciando.
+conn.sync({ force:false}).then(() => {
+  servidor.listen(port, async() => {
+    console.log('Servidor iniciado en el puerto ' + port);   
+  });
 });
-
-
-
-connection.connect((error) => {
-  if (error) {
-    console.error('Error al conectar a la base de datos: ', error);
-  } else {
-    console.log('Conexión exitosa a MySQL :)');
-
-
-
-
-    //---------------------Servidor iniando.
-    app.listen(port, () => {
-      console.log('Servidor iniciado en el puerto '+port);
-    });
-  }
-});
-
 
 

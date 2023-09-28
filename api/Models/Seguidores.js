@@ -1,7 +1,7 @@
-import  DataTypes from "sequelize";
+const { DataTypes } = require('sequelize');
 
 
-export default  (sequelize) => {
+module.exports = (sequelize) => {
          sequelize.define('Seguidor',{
                idFollower : {  // primary Key
                    type : DataTypes.UUID,
@@ -14,7 +14,7 @@ export default  (sequelize) => {
                      defaultValue: DataTypes.NOW,
                 }, 
 
-         })
+         });
 }
 
 
