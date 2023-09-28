@@ -1,6 +1,6 @@
-import  DataTypes   from "sequelize";
+const { DataTypes } = require('sequelize');
 
-export default (sequelize) => {
+module.exports = (sequelize) => {
        sequelize.define("Comentario", {
          idComentario : {
            type : DataTypes.UUID,
@@ -14,6 +14,8 @@ export default (sequelize) => {
          },
          comentario : {
             type : DataTypes.TEXT,
-         }
+         },
        })
 }
+
+
