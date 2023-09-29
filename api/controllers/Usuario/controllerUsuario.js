@@ -19,6 +19,19 @@ const userRegisterController = async ( req ) => {
   }
 };
 
+
+const getAllUsersController = async () => {
+  try {
+    const users = await Usuario.findAll();
+    return users;
+  } catch (error) {
+    console.error('Error al obtener usuarios:', error);
+    throw error; // Relanzar el error para que se maneje en el handler
+  }
+};
+
+
 module.exports = {
     userRegisterController,
+    getAllUsersController
 };
