@@ -108,5 +108,10 @@ sequelize.authenticate()
 
 module.exports = {
  conn : sequelize,
-...sequelize.models
+ Usuario: sequelize.models.Usuario, 
+ Comentario: sequelize.models.Comentario,
+ Emoticon: sequelize.models.Emoticon,
+ Mensaje: sequelize.models.Mensaje,
+ Publicacion: sequelize.models.Publicacion,
+ Seguidor: sequelize.models.Seguidor,
 };
