@@ -1,4 +1,4 @@
-const { userRegisterController } = require('../../controllers/Usuario/controllerUsuario');
+const { userRegisterController, getAllUsersController } = require('../../controllers/Usuario/controllerUsuario');
 
 const userRegister = async (req, res) => {
   try {
@@ -15,6 +15,20 @@ const userRegister = async (req, res) => {
   }
 };
 
+
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await getAllUsersController();
+
+    return res.status(200).json(users);
+  } catch (error) {
+    console.error('Error en el handler de obtener todos los usuarios:', error);
+    return res.status(500).json({ error: 'Error interno del servidor.' });
+  }
+};
+
+
 module.exports = {
   userRegister,
+  getAllUsers
 };
