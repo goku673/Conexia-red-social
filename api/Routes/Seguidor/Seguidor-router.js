@@ -3,6 +3,6 @@ const { followUser } = require('../../handlers/Seguidor/handlerSeguidor')
 
 const router = Router();
 
-router.post('/', followUser);
+router.post('/followUser', followUser);
 
 module.exports = router;
