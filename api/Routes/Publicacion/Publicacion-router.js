@@ -1,8 +1,16 @@
-const { Router} = require('express');
-const createPost = require('../../handlers/Publicacion/handlerPublicacion')
+const { Router } = require('express');
+const {
+  createPost,
+  getAllPosts,
+  getAllPostsByUser,
+  getPostById,
+} = require('../../handlers/Publicacion/handlerPublicacion');
 
-const router = Router();
+const publicacionRouter = Router();
 
-router.post('/', createPost);
+publicacionRouter.post('/create', createPost);
+publicacionRouter.get('/all', getAllPosts);
+publicacionRouter.get('/byUserId/:user_id', getAllPostsByUser);
+publicacionRouter.get('/byPostId/:idPublicacion', getPostById);
 
-module.exports = router;
+module.exports = publicacionRouter;

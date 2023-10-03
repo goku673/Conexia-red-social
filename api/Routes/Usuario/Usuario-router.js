@@ -1,9 +1,10 @@
 const { Router } = require("express");
-const { userRegister, getAllUsers } = require("../../handlers/Usuario/handlerUsuario")
+const { userRegister, getAllUsers, getUserById } = require("../../handlers/Usuario/handlerUsuario")
 
 const router = Router();
 
-router.post("/", userRegister);
-router.get("/", getAllUsers);
+router.post("/register", userRegister);
+router.get("/all", getAllUsers);
+router.get("/userId/:id", getUserById);
 
 module.exports = router;
