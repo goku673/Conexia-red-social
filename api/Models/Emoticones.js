@@ -9,7 +9,8 @@ module.exports =(sequelize) => {
                 defaultValue : DataTypes.UUIDV4,
               },
               typeEmoticon : {
-                type : DataTypes.ENUM("corazon"),
+                //type : DataTypes.ENUM("corazon"),    
+                type : DataTypes.STRING,
               }
               
          })
