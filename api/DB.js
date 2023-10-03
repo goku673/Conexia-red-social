@@ -51,9 +51,9 @@ Publicacion.belongsTo(Usuario, {
 
 
 // Asociaciones entre el Comentario y la Publicacion y su Usuario
-Usuario.hasMany(Comentario, {
-  foreignKey: 'idUser', // La clave foránea en Usuario que referencia a Comentario
-})
+// Usuario.hasMany(Comentario, {
+//   foreignKey: 'idUser', // La clave foránea en Usuario que referencia a Comentario
+// })
 Comentario.belongsTo(Usuario, {
   foreignKey: 'idUser', // La clave foránea en Comentario que referencia a Usuario
 });
