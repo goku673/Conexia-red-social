@@ -20,6 +20,26 @@ const userRegisterController = async ( req ) => {
 };
 
 
+const logInController = async ( req ) => {
+  try {
+    const { email, password } = req.body;
+    const user = await Usuario.findOne({ where: { email } });
+    if (!user) {
+      return { error: 'Credenciales incorrectas' };
+    }
+    const isPasswordCorrect = await Usuario.findOne({ where: { password } });
+    if (!isPasswordCorrect) {
+      return { error: 'Contraseña incorrecta' };
+    }
+    return user;
+    
+  } catch (error) {
+    console.error('Error al iniciar sesión:', error);
+    throw new Error('Error interno al iniciar sesión'); // Relanzar el error para que se maneje en el handler
+  }
+};
+
+
 const getAllUsersController = async () => {
   try {
     const users = await Usuario.findAll();
@@ -54,5 +74,6 @@ const getUserByIdController = async ( req ) => {
 module.exports = {
     userRegisterController,
     getAllUsersController,
-    getUserByIdController
+    getUserByIdController,
+    logInController
 };

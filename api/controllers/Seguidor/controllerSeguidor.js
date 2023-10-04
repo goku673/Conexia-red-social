@@ -26,6 +26,46 @@ const followUserController = async (req) => {
     }
 }
 
+const getFollowingsByUserController = async (req) => {
+    try {
+        const { user_id } = req.params;
+        const followings = await Seguidor.findAll({
+            where: { user_id_seguidor: user_id }
+        });
+
+        if (followings.length === 0) {
+            return { error: 'No sigues a ningún usuario' };
+        }
+
+
+        return followings;
+        
+    } catch (error) {
+        console.error('Error al obtener los seguidores de un usuario:', error);
+        throw error; 
+}};
+
+const getFollowersByUserController = async (req) => {
+    try {
+        const { user_id } = req.params;
+        const followers = await Seguidor.findAll({
+            where: { user_id_seguido: user_id }
+        });
+        
+        if (followers.length === 0) {
+            return { error: 'Ningún usuario te sigue' };
+        }
+        
+        return followers;
+        
+    } catch (error) {
+        console.error('Error al obtener los seguidores de un usuario:', error);
+        throw error; 
+    }
+};
+
 module.exports = {
-    followUserController
+    followUserController,
+    getFollowingsByUserController,
+    getFollowersByUserController
 };
