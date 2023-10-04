@@ -74,12 +74,12 @@ const getUserByIdController = async ( req ) => {
 
   const DeleteUserByEmailController = async ( req ) => {
     try {
-      const { email } = req.params;
-      const user = await Usuario.findOne({ where: { email } });
+      const { id } = req.params;
+      const user = await Usuario.findOne({ where: { id } });
       if (!user) {
         return { error: 'El usuario no existe' };
       }
-      await Usuario.destroy({ where: { email } });
+      await Usuario.destroy({ where: { id } });
       return user;
       
     } catch (error) {

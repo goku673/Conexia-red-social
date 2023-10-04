@@ -20,5 +20,9 @@ module.exports = (sequelize) => {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
     },
+    oculto: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false, // Por defecto, la publicación no está oculta
+    }
   });
 };

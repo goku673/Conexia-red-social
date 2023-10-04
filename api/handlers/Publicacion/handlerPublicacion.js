@@ -1,7 +1,11 @@
 const {createPostController, 
     getAllPostsController, 
     getAllPostsByUserController,
-    getPostByIdController} = require('../../controllers/Publicacion/controllerPublicacion')
+    getPostByIdController,
+    hidePostController,
+    showPostController,
+    deletePostByIdController
+} = require('../../controllers/Publicacion/controllerPublicacion')
 
 const createPost = async (req, res) => {
     try {
@@ -66,9 +70,59 @@ const getAllPostsByUser = async (req, res) => {
 }};
 
 
+const hidePost = async (req, res) => {
+    try {
+        const post = await hidePostController(req);
+        
+        if (post.error) {
+            return res.status(400).json({ error: post.error });
+          }
+          
+          res.status(200).json(post)
+    } catch (error) {
+        console.error('Error en el handler de hidePost:', error);
+        return res.status(500).json({ error: 'Error interno del servidor.' });
+    }
+};
+
+
+const showPost = async (req, res) => {
+    try {
+        const post = await showPostController(req);
+        
+        if (post.error) {
+            return res.status(400).json({ error: post.error });
+          }
+          
+          res.status(200).json(post)
+    } catch (error) {
+        console.error('Error en el handler de showPost:', error);
+        return res.status(500).json({ error: 'Error interno del servidor.' });
+    }
+};
+
+
+const deletePostById = async (req, res) => {
+    try {
+        const post = await deletePostByIdController(req);
+        
+        if (post.error) {
+            return res.status(400).json({ error: post.error });
+          }
+          
+         res.status(200).json(`Post eliminado correctamente.`)
+    } catch (error) {
+        console.error('Error en el handler de deletePostById:', error);
+        return res.status(500).json({ error: 'Error interno del servidor.' });
+    }
+};
+
 module.exports = {
     createPost,
     getAllPosts,
     getAllPostsByUser,
-    getPostById
+    getPostById,
+    hidePost,
+    showPost,
+    deletePostById
 };
