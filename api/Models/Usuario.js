@@ -4,7 +4,7 @@ module.exports = (sequelize) => {
   sequelize.define("Usuario", {
     id: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      defaultValue:  DataTypes.UUIDV4,
       primaryKey: true,
       allowNull: false,
     },
@@ -22,7 +22,7 @@ module.exports = (sequelize) => {
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     imagenURL: {
       type: DataTypes.STRING, // Almacenar la URL de la imagen en lugar de datos binarios
@@ -30,6 +30,6 @@ module.exports = (sequelize) => {
     fechaRegistro: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
-    },
+    }
   });
 };

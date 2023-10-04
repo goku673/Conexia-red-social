@@ -10,7 +10,7 @@ const port = 3007;
 
 
 //---------------------Servidor iniciando.  sync sincronizado la base de datos sequelize y sevidor;
-conn.sync({ force:false}).then(() => {
+conn.sync({ alter : true}).then(() => {
   servidor.listen(port, async() => {
     console.log('Servidor iniciado en el puerto ' + port);   
   });
