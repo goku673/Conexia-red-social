@@ -1,30 +1,42 @@
 const {Router} = require('express');
 const rutaPrincipal  = Router();
-const registerUser   = require('./Usuario/Usuario-router')
-const getAllUsers    = require('./Usuario/Usuario-router')
-const createPost     = require('./Publicacion/Publicacion-router')
-const followUser     = require('./Seguidor/Seguidor-router')
+// RUTAS DE USUARIOS
+const userRouter   = require('./Usuario/Usuario-router')
+
+// RUTAS DE PUBLICACIONES
+const publicacionRouter = require('./Publicacion/Publicacion-router');
+
+// RUTAS DE SEGUIDORES
+const followRouter     = require('./Seguidor/Seguidor-router')
+
+// RUTAS PARA CREAR MENSAJES
 const rutaMensaje    = require('../Routes/Mensaje/index.js');
+
+// RUTAS PARA COMENTARIOS;
 const rutaComentario = require('../Routes/Comentario/index.js');
+
+// RUTAS PARA EMOTICONES 
 const { routerEmoticon } = require('../Routes/Emoticons/index.js');
 const rutaGoogle        = require('../Routes/loginGoogle/index.js');
  require('dotenv').config();
 
+
+
+
 // RUTAS DE USUARIOS
-rutaPrincipal.use('/registerUser', registerUser)
-rutaPrincipal.use('/getAllUsers', getAllUsers)
+rutaPrincipal.use('/user', userRouter)
 
 // RUTAS DE PUBLICACIONES
-rutaPrincipal.use('/createPost', createPost)
+rutaPrincipal.use('/publicacion', publicacionRouter);
 
 // RUTAS DE SEGUIDORES
-rutaPrincipal.use('/followUser', followUser)
+rutaPrincipal.use('/follow', followRouter)
 
 //  RUTAS PARA CREAR MENSAJES
-rutaPrincipal.use('/createMessage',rutaMensaje);
+rutaPrincipal.use('/mensaje',rutaMensaje);
 
 //RUTAS PARA EMOTICONES 
-rutaPrincipal.use('/createEmoticon', routerEmoticon);
+rutaPrincipal.use('/emoticon', routerEmoticon);
 
 //RUTAS PARA COMENTARIOS;
 rutaPrincipal.use('/comentario',rutaComentario);

@@ -20,9 +20,34 @@ const userRegisterController = async ( req ) => {
 };
 
 
+const logInController = async ( req ) => {
+  try {
+    const { email, password } = req.body;
+    const user = await Usuario.findOne({ where: { email } });
+    if (!user) {
+      return { error: 'Credenciales incorrectas' };
+    }
+    const isPasswordCorrect = await Usuario.findOne({ where: { password } });
+    if (!isPasswordCorrect) {
+      return { error: 'Contraseña incorrecta' };
+    }
+    return user;
+    
+  } catch (error) {
+    console.error('Error al iniciar sesión:', error);
+    throw new Error('Error interno al iniciar sesión'); // Relanzar el error para que se maneje en el handler
+  }
+};
+
+
 const getAllUsersController = async () => {
   try {
     const users = await Usuario.findAll();
+
+    if (!users) {
+      return { error: 'No se han encontrado usuarios' };
+    }
+
     return users;
   } catch (error) {
     console.error('Error al obtener usuarios:', error);
@@ -31,7 +56,24 @@ const getAllUsersController = async () => {
 };
 
 
+const getUserByIdController = async ( req ) => {
+  try {
+    const { id } = req.params;
+    const user = await Usuario.findByPk(id);
+    if (!user) {
+      return { error: 'El usuario no existe' };
+    }
+    return user;
+    
+  } catch (error) {
+    console.error('Error al obtener usuario:', error);
+    throw error; // Relanzar el error para que se maneje en el handler
+  }
+};
+
 module.exports = {
     userRegisterController,
-    getAllUsersController
+    getAllUsersController,
+    getUserByIdController,
+    logInController
 };
