@@ -1,4 +1,4 @@
-const { userRegisterController, getAllUsersController, getUserByIdController, logInController } = require('../../controllers/Usuario/controllerUsuario');
+const { userRegisterController, getAllUsersController, getUserByIdController, logInController, DeleteUserByEmailController } = require('../../controllers/Usuario/controllerUsuario');
 
 const userRegister = async (req, res) => {
   try {
@@ -68,9 +68,27 @@ const logIn = async (req, res) => {
   }
 };
 
+
+const DeleteUserByEmail = async (req, res) => {
+  try {
+    const user = await DeleteUserByEmailController(req);
+    
+    if(user.error) {
+      return res.status(400).json({ error: user.error });
+    }
+    
+    return res.status(200).json({ message: 'Usuario eliminado' });
+    
+  } catch (error) {
+    console.error('Error en el handler de borrar usuario:', error);
+    return res.status(500).json({ error: 'Error interno del servidor.' });
+  }
+};
+
 module.exports = {
   userRegister,
   getAllUsers,
   getUserById,
-  logIn
+  logIn,
+  DeleteUserByEmail
 };
