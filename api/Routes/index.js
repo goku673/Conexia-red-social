@@ -17,6 +17,8 @@ const rutaComentario = require('../Routes/Comentario/index.js');
 
 // RUTAS PARA EMOTICONES 
 const { routerEmoticon } = require('../Routes/Emoticons/index.js');
+const rutaGoogle        = require('../Routes/loginGoogle/index.js');
+ require('dotenv').config();
 
 
 
@@ -38,6 +40,10 @@ rutaPrincipal.use('/emoticon', routerEmoticon);
 
 //RUTAS PARA COMENTARIOS;
 rutaPrincipal.use('/comentario',rutaComentario);
+
+//RUTAS PARA AUTENTICACION CON GOOGLE 
+
+rutaPrincipal.use('/auth/google',rutaGoogle);
 
 
 module.exports = rutaPrincipal;
