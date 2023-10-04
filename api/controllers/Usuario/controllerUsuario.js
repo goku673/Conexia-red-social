@@ -71,9 +71,28 @@ const getUserByIdController = async ( req ) => {
   }
 };
 
+
+  const DeleteUserByEmailController = async ( req ) => {
+    try {
+      const { email } = req.params;
+      const user = await Usuario.findOne({ where: { email } });
+      if (!user) {
+        return { error: 'El usuario no existe' };
+      }
+      await Usuario.destroy({ where: { email } });
+      return user;
+      
+    } catch (error) {
+      console.error('Error al borrar usuario:', error);
+      throw error; // Relanzar el error para que se maneje en el handler
+    }
+  };
+
+
 module.exports = {
     userRegisterController,
     getAllUsersController,
     getUserByIdController,
-    logInController
+    logInController,
+    DeleteUserByEmailController
 };
