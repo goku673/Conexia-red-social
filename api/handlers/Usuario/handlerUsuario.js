@@ -1,4 +1,4 @@
-const { userRegisterController, getAllUsersController, getUserByIdController } = require('../../controllers/Usuario/controllerUsuario');
+const { userRegisterController, getAllUsersController, getUserByIdController, logInController } = require('../../controllers/Usuario/controllerUsuario');
 
 const userRegister = async (req, res) => {
   try {
@@ -47,8 +47,30 @@ const getUserById = async (req, res) => {
   }
 };
 
+
+const logIn = async (req, res) => {
+  try {
+    const user = await logInController(req);
+    
+    if(user.error) {
+      return res.status(400).json({ error: user.error });
+    }
+    
+    return res.status(200).json({ message: 'Inicio de sesión exitoso', userID: user.id, 
+    imagenURL: user.imagenURL, 
+    nombre: user.nombre, 
+    email: user.email 
+  });
+
+  } catch (error) {
+    console.error('Error en el handler de signIn:', error);
+    return res.status(500).json({ error: 'Error interno del servidor.' });
+  }
+};
+
 module.exports = {
   userRegister,
   getAllUsers,
-  getUserById
+  getUserById,
+  logIn
 };
