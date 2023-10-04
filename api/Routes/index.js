@@ -27,7 +27,7 @@ const rutaGoogle        = require('../Routes/loginGoogle/index.js');
 rutaPrincipal.use('/user', userRouter)
 
 // RUTAS DE PUBLICACIONES
-rutaPrincipal.use('/publicacion', publicacionRouter);
+rutaPrincipal.use('/post', publicacionRouter);
 
 // RUTAS DE SEGUIDORES
 rutaPrincipal.use('/follow', followRouter)

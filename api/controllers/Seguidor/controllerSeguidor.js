@@ -64,8 +64,33 @@ const getFollowersByUserController = async (req) => {
     }
 };
 
+
+const unFollowUserController = async (req) => {
+    try {
+        const { user_id_seguidor, user_id_seguido } = req.body;
+
+        // Verificar si existe una relación de seguimiento entre estos usuarios
+        const existingFollow = await Seguidor.findOne({
+            where: { user_id_seguidor, user_id_seguido }
+        });
+
+        if (!existingFollow) {
+            return { error: 'No sigues a este usuario' };
+        }
+
+        // Eliminar la relación de seguimiento
+        await existingFollow.destroy();
+
+        return { message: 'Has dejado de seguir a este usuario' };
+    } catch (error) {
+        console.error('Error al dejar de seguir a un usuario:', error);
+        throw error;
+    }
+};
+
 module.exports = {
     followUserController,
     getFollowingsByUserController,
-    getFollowersByUserController
+    getFollowersByUserController,
+    unFollowUserController
 };

@@ -21,7 +21,7 @@ const createPostController = async (req) => {
 
 const getAllPostsController = async () => {
    try {
-      const posts = await Publicacion.findAll();
+      const posts = await Publicacion.findAll({ where: { oculto: false } });
 
       if (posts.length === 0) {
          return { error: 'No se han encontrado publicaciones' };
@@ -73,9 +73,77 @@ const getAllPostsByUserController = async (req) => {
 };
 
 
+const hidePostController = async (req) => {
+   try {
+      const { idPublicacion } = req.params;
+
+      // Actualiza la columna "oculto" a true
+      const [rowsAffected] = await Publicacion.update({ oculto: true }, { where: { idPublicacion } });
+
+      if (rowsAffected === 0) {
+         return { error: 'No se ha encontrado la publicación' };
+       }
+
+      // Consulta la publicación actualizada
+      const post = await Publicacion.findOne({ where: { idPublicacion } });
+
+      return post;
+      
+   } catch (error) {
+      console.error('Error al ocultar post:', error);
+      throw error; // Relanzar el error para que se maneje en el handler
+   }
+};
+
+
+const showPostController = async (req) => {
+   try {
+      const { idPublicacion } = req.params;
+      
+      // Actualiza la columna "oculto" a false
+      const [rowsAffected] = await Publicacion.update({ oculto: false }, { where: { idPublicacion } });
+      
+      if (rowsAffected === 0) {
+         return { error: 'No se ha encontrado la publicación' };
+       }
+       // Consulta la publicación actualizada
+       const post = await Publicacion.findOne({ where: { idPublicacion } });
+       return post;
+       
+   } catch (error) {
+      console.error('Error al mostrar post:', error);
+      throw error; // Relanzar el error para que se maneje en el handler
+   }
+};
+
+
+const deletePostByIdController = async (req) => {
+   try {
+      const { idPublicacion } = req.params;
+
+      const post = await Publicacion.destroy({ where: { idPublicacion } });
+
+      if(!post) {
+         return { error: 'No se ha encontrado la publicación' };
+      }
+      
+      return post;
+
+   } catch (error) {
+      console.error('Error al eliminar post:', error);
+      throw error; // Relanzar el error para que se maneje en el handler
+
+   }
+};
+
+
+
 module.exports = {
    createPostController, 
    getAllPostsController,
    getAllPostsByUserController,
-   getPostByIdController
+   getPostByIdController,
+   hidePostController,
+   showPostController,
+   deletePostByIdController
 };

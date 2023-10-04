@@ -1,4 +1,8 @@
-const { followUserController, getFollowingsByUserController, getFollowersByUserController } = require('../../controllers/Seguidor/controllerSeguidor');
+const { followUserController, 
+    getFollowingsByUserController,
+    getFollowersByUserController,
+    unFollowUserController
+    } = require('../../controllers/Seguidor/controllerSeguidor');
 
 const followUser = async (req, res) => {
     try {
@@ -44,4 +48,19 @@ const getFollowersByUser = async (req, res) => {
     }
 };
 
-module.exports = {followUser, getFollowingsByUser,getFollowersByUser};
+
+const unFollowUser = async (req, res) => {
+    try {
+        const unFollowUser = await unFollowUserController(req);
+        if (unFollowUser.error) {
+            return res.status(400).json({ error: unFollowUser.error });
+        }
+        return res.status(200).json(unFollowUser);
+        
+    } catch (error) {
+        console.error('Error en el handler de unFollowUser:', error);
+        return res.status(500).json({ error: 'Error interno del servidor.' });
+    }
+};
+
+module.exports = {followUser, getFollowingsByUser,getFollowersByUser, unFollowUser};
