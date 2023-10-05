@@ -14,6 +14,7 @@ passportSetup.use(
       clientID: process.env.GOOGLE_ID_CLIENT,
       clientSecret : process.env.GOOGLE_SECRET_CLIENT,
       callbackURL : process.env.URI1,
+      scope: ['profile', 'email']
    },
 
 
@@ -39,7 +40,7 @@ passportSetup.use(
 
 //se utiliza para determinar que datos del objeto de usuario deben almacenarse en la sesion
 passportSetup.serializeUser((user,done) => {
-   done(null,user.profile.id);
+   done(null,user.id);
 });
 //se utiliza pra tomar  los datos de la sesion  y buscar informacion completa del usuarion en la base de datos
 passportSetup.deserializeUser(async (id, done) => {

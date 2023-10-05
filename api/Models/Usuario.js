@@ -30,6 +30,10 @@ module.exports = (sequelize) => {
     fechaRegistro: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
+    },
+    isSuperAdmin :{
+        type : DataTypes.BOOLEAN,
+        defaultValue : false,
     }
   });
 };
