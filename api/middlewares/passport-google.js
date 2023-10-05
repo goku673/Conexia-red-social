@@ -39,7 +39,7 @@ passportSetup.use(
 
 //se utiliza para determinar que datos del objeto de usuario deben almacenarse en la sesion
 passportSetup.serializeUser((user,done) => {
-   done(null,user.id);
+   done(null,user.profile.id);
 });
 //se utiliza pra tomar  los datos de la sesion  y buscar informacion completa del usuarion en la base de datos
 passportSetup.deserializeUser(async (id, done) => {
