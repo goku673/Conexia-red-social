@@ -3,11 +3,11 @@ const passport = require("passport");
 const logGoogle = require('../../handlers/loginGoogle/index.js');
 const rutaGoogle = Router();
 
-// rutaGoogle.get('/',
-//     passport.authenticate('google', {scope: ['profile','email']})
-//  );
-
-rutaGoogle.get('/',passport.authenticate('google',{failureRedirect : '/login'}),
+rutaGoogle.get('/',
+    passport.authenticate('google', {scope: ['profile','email']})
+ );
+//http://localhost:3007/auth/logGoogle
+rutaGoogle.get('/logGoogle',passport.authenticate('google',{failureRedirect : '/login'}),
   logGoogle
 );
 
