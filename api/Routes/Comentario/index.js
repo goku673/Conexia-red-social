@@ -5,4 +5,7 @@ const rutaComentario = Router();
 rutaComentario.post('/createComentario',createComentario);
 
 
+//actualizar comentario
+// borrar comentario
+
 module.exports = rutaComentario;

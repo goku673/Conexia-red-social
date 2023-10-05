@@ -4,7 +4,7 @@ const createEmoticon = require('../../handlers/Emoticons/index.js');
 const routerEmoticon = Router();
 
 
-routerEmoticon.post('/',createEmoticon);
+routerEmoticon.post('/darLike',createEmoticon);
 
 
 module.exports = {

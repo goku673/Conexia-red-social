@@ -1,4 +1,12 @@
-const { userRegisterController, getAllUsersController, getUserByIdController, logInController, DeleteUserByEmailController } = require('../../controllers/Usuario/controllerUsuario');
+const { userRegisterController, 
+  getAllUsersController, 
+  getUserByIdController, 
+  logInController, 
+  DeleteUserByIdController,
+  getUserByNameController,
+  updateUserController,
+  updatePasswordController
+} = require('../../controllers/Usuario/controllerUsuario');
 
 const userRegister = async (req, res) => {
   try {
@@ -69,9 +77,9 @@ const logIn = async (req, res) => {
 };
 
 
-const DeleteUserByEmail = async (req, res) => {
+const DeleteUserById = async (req, res) => {
   try {
-    const user = await DeleteUserByEmailController(req);
+    const user = await DeleteUserByIdController(req);
     
     if(user.error) {
       return res.status(400).json({ error: user.error });
@@ -85,10 +93,63 @@ const DeleteUserByEmail = async (req, res) => {
   }
 };
 
+
+const getUserByName = async (req, res) => {
+  try {
+    const user = await getUserByNameController(req);
+    
+    if(user.error) {
+      return res.status(400).json({ error: user.error });
+    }
+    
+    return res.status(200).json(user);
+  } catch (error) {
+    console.error('Error en el handler de buscar usuario por nombre:', error);
+    return res.status(500).json({ error: 'Error interno del servidor.' });
+  }
+};
+
+
+const updateUser = async (req, res) => {
+  try {
+    const user = await updateUserController(req);
+    
+    if(user.error) {
+      return res.status(400).json({ error: user.error });
+    }
+    
+    return res.status(200).json({ message: 'Usuario actualizado' });
+    
+  } catch (error) {
+    console.error('Error en el handler de actualizar usuario:', error);
+    return res.status(500).json({ error: 'Error interno del servidor.' });
+  }
+};
+
+
+const updatePassword = async (req, res) => {
+  try {
+    const user = await updatePasswordController(req);
+    
+    if(user.error) {
+      return res.status(400).json({ error: user.error });
+    }
+    
+    return res.status(200).json({ message: 'Contraseña actualizada' });
+    
+  } catch (error) {
+    console.error('Error en el handler de actualizar contraseña:', error);
+    return res.status(500).json({ error: 'Error interno del servidor.' });
+  }
+};
+
 module.exports = {
   userRegister,
   getAllUsers,
   getUserById,
   logIn,
-  DeleteUserByEmail
+  DeleteUserById,
+  getUserByName,
+  updateUser,
+  updatePassword
 };

@@ -1,10 +1,11 @@
 const { DataTypes } = require('sequelize');
+const bcrypt = require('bcrypt');
 
 module.exports = (sequelize) => {
-  sequelize.define("Usuario", {
+  const Usuario = sequelize.define("Usuario", {
     id: {
       type: DataTypes.UUID,
-      defaultValue:  DataTypes.UUIDV4,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
       allowNull: false,
     },
@@ -15,7 +16,6 @@ module.exports = (sequelize) => {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
       validate: {
         isEmail: true, // Validar que el campo sea una dirección de correo electrónico
       },
@@ -23,6 +23,10 @@ module.exports = (sequelize) => {
     password: {
       type: DataTypes.STRING,
       allowNull: true,
+      set(value) {
+        const hash = bcrypt.hashSync(value, 10);
+        this.setDataValue('password', hash);
+      }
     },
     imagenURL: {
       type: DataTypes.STRING, // Almacenar la URL de la imagen en lugar de datos binarios
@@ -31,9 +35,16 @@ module.exports = (sequelize) => {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
     },
-    isSuperAdmin :{
-        type : DataTypes.BOOLEAN,
-        defaultValue : false,
+    isSuperAdmin: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     }
   });
+
+  // Definir el método de instancia checkPassword
+  Usuario.prototype.checkPassword = function (password) {
+    return bcrypt.compareSync(password, this.password);
+  };
+
+  return Usuario;
 };
