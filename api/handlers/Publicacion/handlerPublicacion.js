@@ -4,7 +4,9 @@ const {createPostController,
     getPostByIdController,
     hidePostController,
     showPostController,
-    deletePostByIdController
+    deletePostByIdController,
+    getHiddenPostsByUserController,
+    updatePostController
 } = require('../../controllers/Publicacion/controllerPublicacion')
 
 const createPost = async (req, res) => {
@@ -117,6 +119,38 @@ const deletePostById = async (req, res) => {
     }
 };
 
+
+const getHiddenPostsByUser = async (req, res) => {
+    try {
+        const posts = await getHiddenPostsByUserController(req);
+        
+        if (posts.error || posts.length === 0) {
+            return res.status(404).json({ error: posts.error });
+          }
+          
+          res.status(200).json(posts)
+    } catch (error) {
+        console.error('Error en el handler de getHiddenPostsByUser:', error);
+        return res.status(500).json({ error: 'Error interno del servidor.' });
+    }
+};
+
+
+const updatePost = async (req, res) => {
+    try {
+        const post = await updatePostController(req);
+        
+        if (post.error) {
+            return res.status(400).json({ error: post.error });
+          }
+          
+         res.status(200).json(post)
+    } catch (error) {
+        console.error('Error en el handler de updatePost:', error);
+        return res.status(500).json({ error: 'Error interno del servidor.' });
+    }
+}
+
 module.exports = {
     createPost,
     getAllPosts,
@@ -124,5 +158,7 @@ module.exports = {
     getPostById,
     hidePost,
     showPost,
-    deletePostById
+    deletePostById,
+    getHiddenPostsByUser,
+    updatePost
 };
