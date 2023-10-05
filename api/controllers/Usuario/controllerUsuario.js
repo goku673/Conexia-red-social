@@ -1,4 +1,7 @@
 const { Usuario } = require('../../DB.js');
+const { Op } = require('sequelize');
+
+
 
 const userRegisterController = async ( req ) => {
   try {
@@ -72,7 +75,7 @@ const getUserByIdController = async ( req ) => {
 };
 
 
-  const DeleteUserByEmailController = async ( req ) => {
+  const DeleteUserByIdController = async ( req ) => {
     try {
       const { id } = req.params;
       const user = await Usuario.findOne({ where: { id } });
@@ -88,11 +91,83 @@ const getUserByIdController = async ( req ) => {
     }
   };
 
+  
+  const getUserByNameController = async (req) => {
+    try {
+      const { nombre } = req.query;
+      const users = await Usuario.findAll({
+        where: {
+          nombre: {
+            [Op.like]: `%${nombre}%`
+          }
+        }
+      });
+  
+      if (users.length === 0) {
+        return { error: 'No se encontraron usuarios con ese nombre' };
+      }
+  
+      return users;
+    } catch (error) {
+      console.error('Error al obtener usuarios por nombre:', error);
+      throw error;
+    }
+  };
+
+
+  const updateUserController = async (req) => {
+    try {
+      const { id } = req.params;
+      const { nombre, imagenURL } = req.body;
+      const user = await Usuario.findByPk(id);
+      if (!user) {
+        return { error: 'El usuario no existe' };
+      }
+      await user.update({ nombre, imagenURL });
+      return user;
+      
+    } catch (error) {
+      console.error('Error al actualizar usuario:', error);
+      throw error;
+    }
+  };
+  
+
+  const updatePasswordController = async (req) => {
+    try {
+      const { id } = req.params;
+      const { currentPassword, newPassword } = req.body;
+      const user = await Usuario.findByPk(id);
+  
+      if (!user) {
+        return { error: 'El usuario no existe' };
+      }
+  
+      // Verifica si la contraseña actual proporcionada coincide con la almacenada
+      const isPasswordCorrect = await user.checkPassword(currentPassword);
+  
+      if (!isPasswordCorrect) {
+        return { error: 'La contraseña actual es incorrecta' };
+      }
+  
+      // Actualiza la contraseña del usuario con la nueva contraseña
+      await user.update({ password: newPassword });
+  
+      return user;
+    } catch (error) {
+      console.error('Error al actualizar contraseña:', error);
+      throw error;
+    }
+  };
+  
 
 module.exports = {
     userRegisterController,
     getAllUsersController,
     getUserByIdController,
     logInController,
-    DeleteUserByEmailController
+    DeleteUserByIdController,
+    getUserByNameController,
+    updateUserController,
+    updatePasswordController
 };
