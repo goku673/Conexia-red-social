@@ -2,14 +2,9 @@
 
 const logGoogle = async(req,res) => {
     try {
-        
         const user = req.user;
-
         if(user){
-          return  res.status(299).json({
-              message : "registro exitoso con google", 
-              user : user,
-            })
+          return  res.status(299).send('<h1>Hola mundo </h1>')
         }
         return res.status(401).json({message: 'autenticacion con google fallida' });
     } catch (error) {
