@@ -11,3 +11,9 @@
 GOOGLE_ID_CLIENT =
 GOOGLE_SECRET_CLIENT = 
 URI1 = " "
+
+
+#para enviar notificaciones 
+
+CONEXIA_API_KEY = 
+MY_EMAIL = " "
