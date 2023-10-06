@@ -7,7 +7,11 @@ const { userRegisterController,
   updateUserController,
   updatePasswordController
 } = require('../../controllers/Usuario/controllerUsuario');
+const enviarEmail  = require('@sendgrid/mail');
+const dotenv       = require('dotenv');
+dotenv.config();
 
+enviarEmail.setApiKey(process.env.CONEXIA_API_KEY);
 const userRegister = async (req, res) => {
   try {
     const newUser = await userRegisterController(req);
@@ -15,7 +19,28 @@ const userRegister = async (req, res) => {
     if (newUser.error) {
       return res.status(400).json({ error: newUser.error });
     }
-    
+
+    const mensaje = {
+       to : newUser.email,
+       from : process.env.MY_EMAIL,
+       subject : `BIENBENIDO ${newUser.nombre} a nuestra Aplicacion`,
+       text : 'Estamos contentos de que te hayas unido a nuestra aplicación. ¡Disfrutala!',
+       html : `
+          <div>
+               <h1>BIENBENIDO ${newUser.nombre} a nuestra red social </h1>
+               <br>
+               <p>Estamos  contentos de que te hayas unido a nuestra plataforma, Disfrutala </p>
+               <p>Espero que  te diviertas! </p>
+          </div>
+       `
+    }
+
+    enviarEmail.send(mensaje).then( ()=> {
+        console.log(`Correo enviado con exito a ${newUser.email}`);
+    }).catch( (error) => {
+        console.log('Error al enviar el correo', error)
+    })
+  
     return res.status(201).json(newUser);
   } catch (error) {
     console.error('Error en el handler de registro de usuario:', error);
