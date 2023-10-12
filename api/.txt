@@ -16,4 +16,5 @@ URI1 = " "
 #para enviar notificaciones 
 
 CONEXIA_API_KEY = 
-MY_EMAIL = " "
+MY_EMAIL = "" 
+

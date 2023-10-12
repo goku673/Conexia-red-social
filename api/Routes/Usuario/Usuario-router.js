@@ -10,8 +10,10 @@ const { userRegister,
 } = require("../../handlers/Usuario/handlerUsuario")
 
 const router = Router();
+const upload = require('../../services/multer.js');
 
-router.post("/register", userRegister);
+
+router.post("/register",upload.single('imagen'), userRegister); // para manejar la subida de archivos
 router.post("/login", logIn);
 router.get("/all", getAllUsers);
 router.get("/userId/:id", getUserById);

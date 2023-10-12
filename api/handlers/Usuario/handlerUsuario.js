@@ -23,11 +23,11 @@ const userRegister = async (req, res) => {
     const mensaje = {
        to : newUser.email,
        from : process.env.MY_EMAIL,
-       subject : `BIENBENIDO ${newUser.nombre} a nuestra Aplicacion`,
+       subject : `BIENVENIDO ${newUser.nombre} a nuestra Aplicacion`,
        text : 'Estamos contentos de que te hayas unido a nuestra aplicación. ¡Disfrutala!',
        html : `
           <div>
-               <h1>BIENBENIDO ${newUser.nombre} a nuestra red social </h1>
+               <h1>BIENVENIDO ${newUser.nombre} a nuestra red social </h1>
                <br>
                <p>Estamos  contentos de que te hayas unido a nuestra plataforma, Disfrutala </p>
                <p>Espero que  te diviertas! </p>

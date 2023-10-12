@@ -2,7 +2,7 @@
 const dotenv = require('dotenv');
 const {conn}  = require('./DB.js');
 dotenv.config();
-const servidor = require('./servidor.js');
+const {servidor} = require('./servidor.js');
 
 //const servidor = express();
 //servidor.use(express.json());
