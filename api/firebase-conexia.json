@@ -1,0 +1,14 @@
+{
+    "type": "service_account",
+    "project_id": "red-conexia",
+    "private_key_id": "27bb17719037ef1f14abe1b3b2e32fcc58886260",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCae+o8ttaWaojD\nJyRNL2g5udKGuz80fTYkGVy0G5YGuHMfYz6KEp3lWoYgKmUi9Q0D644p85QscM4o\nYtY+/cHzHyjkoH8+Pyz0gCM+5xfMZsCyULi4+dUAyzKUbGVWyaGPYmR/HLkk3VDz\n6/gFSJqas6sk+0mth3dyAjKyDJ5ZK/c+Bcq/QgOlmDaZ2ZRdqNgQJYGKLOwTzJ/q\nsgS4S46YOI0MeXt35/PjWAXIyo6+XUxDZ5YbxBeignJUJonf2zx0ZPZNN1HzR3dz\nFMiPNDsw8Ju0mXghF7va/go24mJvDQHCwOtYG3j/bXJ2aESvaLyT0m6FdKG1UpMW\nMHypn5QPAgMBAAECggEADuJymr/5JAwGulrqnf872RgE51NiTyHjVg4VhwsDZQlf\nmj4bN/18Ni2HL9E15mzbAK4xB+y+sZt62ZxQTUhw6AZwD7tBF1PJ9pLkEnr8qYaa\n+XNaoQP9WHK7oF5jUz3hMaoGydKQKjOiyaXKQ2QP9WjrTAhkPHKJeTQqA0rA9RFn\njsCEGpeteT+uZGNljVcREl4M30M+Dd7Cg9XWgIUaIbxtnM4EfVpEjiFMqjXK2cUB\nH+YmfJNDvphzks4s+kaMuZ7tqsisbxyBXhdob7xHES5f4zHxZrh3z7L/avLKT1J9\n8KfjiChzLGvI0L+MuGwSKhli9Nt754eLxekJnW0R2QKBgQDMHld+btijDOxAHgNQ\n6nvxFOFE2YivTXBnADusvpvUc2nWbgtqrRihOOjAawer85HRHse/KbX7Y2RMvNjK\ndO6RS20zZVSnZdZO+bZcbnAUQoevwaWSYKSOMkd1ii7s/6bxKSyntwfb2cGnj7CU\nb+5an0sHovz4GBUp9r5vo6TINwKBgQDBv/BYomVHqpCH3PaESV9HXzJZN/b9gU4e\nVkS1APrN1VK+RZPmNWIguP63Konm9yc7IbwaDZKbjYmdpQRV7i1FiRskexk0xH//\nR6dV2DVU/PynC7XTCQEiLdGtlvEnEEvNs0TqqKNr+bSUnVzqxVrbp3o+bzr2DgyG\nhGwMuIR26QKBgHPlSnJsR68UmFOzdtiLuwHghCOOjDBU/NxO4pMrytjvCwoIg4z3\naYOpB2axnrKAYqvlGS8uZLiu73UuyLzzdb2joQZMo6tEhFFlMaj7v8GRIO+nOPaK\nzwQ6Ah737br9UXGemk9D+j9XPcCBMpalkyV7SqO0ZIQNUH76LZi/xsEzAoGAHZZK\nBb8G6GLLn3PG0XzC6AtJjQZW2W+dllRmOZ3krvocoKHPbCBK0+RsQVxlorerbgRA\nzVm1QbvjgAdrGhQ9JZlCY9fIiZ5YTYuLqjhSLKBVlMzc/1UoryeAFZovSV/bs5Xk\nuFD4Y8zGHsvJHLD2pwR0ToR95IVQtFoUhfzHfcECgYAJ1BbnMjpKGa0OjRFTWMsm\nOjknLo0S5gE5wNwaDXj6ftigKP6TCd2/96f3Y8CGYjaA3ed5FBYB2ND0urvdSwGW\nce2VgQbA9wvFhgelkCRyoAEc/ufUpJmgVoQiJ1W+Y0FaS5FZHdilcDjlniFF3LOB\nEPOqAczqabCQ1A9UsRNqvA==\n-----END PRIVATE KEY-----\n",
+    "client_email": "firebase-adminsdk-no6ho@red-conexia.iam.gserviceaccount.com",
+    "client_id": "113198874402319882632",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-no6ho%40red-conexia.iam.gserviceaccount.com",
+    "universe_domain": "googleapis.com"
+  }
+  

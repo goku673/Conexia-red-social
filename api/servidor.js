@@ -6,8 +6,20 @@ const cors = require('cors');
 const passportSetup = require('./middlewares/passport-google.js');
 const dotenv   = require('dotenv');
 const session = require('express-session');
-
+const admin   = require('firebase-admin');
 dotenv.config();
+
+
+//inicio firebase 
+// const serviceAccount = require('./firebase-conexia.json');
+// admin.initializeApp({
+//    credential : admin.credential.cert(serviceAccount),
+//    storageBucket : process.env.MY_BUCKET_URL
+// });
+
+// let bucket = admin.storage().bucket();
+// console.log("este es mi buket............");
+// console.log(bucket);
 const servidor = express();
 // configuacion de middelwares
 servidor.use(express.urlencoded({ extended: true, limit: '200mb' }));//recibir datos de formularios html
@@ -20,7 +32,7 @@ servidor.use(session({
   resave: false,
   saveUninitialized: true,
 }));
-
+  
 servidor.use(passportSetup.initialize());
 servidor.use(passportSetup.session());
 const dominioPermitido = '*';
@@ -45,4 +57,4 @@ servidor.use('/', rutaPrincipal);
 
 
 
-module.exports = servidor;
+module.exports = {servidor};
