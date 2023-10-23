@@ -7,7 +7,7 @@ rutaGoogle.get('/',
     passport.authenticate('google', {scope: ['profile','email']})
  );
 //http://localhost:3007/auth/logGoogle
-rutaGoogle.get('/logGoogle',passport.authenticate('google',{failureRedirect : '/login'}),
+rutaGoogle.get('/auth/logGoogle',passport.authenticate('google',{failureRedirect : '/login'}),
   logGoogle
 );
 

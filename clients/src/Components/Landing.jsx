@@ -1,30 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
 
-function Landing() {
+function LoginGoogle() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const userCookie = Cookies.get('user');
+    if (userCookie) {
+      setUser(JSON.parse(userCookie));
+    }
+  }, []);
+
+  const handleLogin = () => {
+   window.location.href = 'http://localhost:3007/auth/logGoogle';
+  };
+
   return (
-    <div className="h-screen flex items-center justify-center bg-gray-100">
-      <div className="max-w-lg p-8 bg-white shadow-lg rounded-md">
-        <h1 className="text-2xl font-bold mb-4">Iniciar Sesión</h1>
-        <form>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-600 font-medium mb-2">Correo Electrónico</label>
-            <input type="email" id="email" className="w-full p-2 border rounded-md" placeholder="Correo Electrónico" />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-gray-600 font-medium mb-2">Contraseña</label>
-            <input type="password" id="password" className="w-full p-2 border rounded-md" placeholder="Contraseña" />
-          </div>
-          <button className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700">
-            Iniciar Sesión
-          </button>
-        </form>
-        <p className="mt-4 text-gray-600">
-          ¿No estás registrado?{' '}
-          <button className="text-blue-500 hover:underline">Regístrate</button>
-        </p>
-      </div>
+    <div>
+      <button onClick={handleLogin}>
+        Continuar con Google
+      </button>
+      {user && (
+        <div>
+          <h2>Bienvenido, {user.nombre}</h2>
+          <p>Email: {user.email}</p>
+        </div>
+      )}
     </div>
   );
 }
 
-export default Landing;
+export default LoginGoogle;
