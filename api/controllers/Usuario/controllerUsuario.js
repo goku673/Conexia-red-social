@@ -53,7 +53,9 @@ const logInController = async (req) => {
     if (!user) {
       return { error: 'Credenciales incorrectas' };
     }
-    const isPasswordCorrect = await Usuario.findOne({ where: { password } });
+    // await Usuario.findOne({ where: { password } });
+  
+    const isPasswordCorrect = user.password === password;
     if (!isPasswordCorrect) {
       return { error: 'Contraseña incorrecta' };
     }

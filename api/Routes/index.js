@@ -43,7 +43,8 @@ rutaPrincipal.use('/comentario',rutaComentario);
 
 //RUTAS PARA AUTENTICACION CON GOOGLE 
 
-rutaPrincipal.use('/auth',rutaGoogle);
+rutaPrincipal.use('/',rutaGoogle);
 
 
 module.exports = rutaPrincipal;
+
