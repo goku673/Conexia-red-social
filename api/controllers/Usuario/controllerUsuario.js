@@ -36,7 +36,7 @@ const userRegisterController = async (req) => {
     });
 
     const imagenURL = `https://firebasestorage.googleapis.com/v0/b/red-conexia.appspot.com/o/${encodeURIComponent(remoteFileName)}?alt=media`
-    const newUser = await Usuario.create({ nombre, email , password, imagenURL });
+    const newUser = await Usuario.create({ nombre, email , password, imagenURL,resenia,imagenURLPortada});
 
     return newUser
   } catch (error) {
@@ -55,7 +55,7 @@ const logInController = async (req) => {
     }
     // await Usuario.findOne({ where: { password } });
   
-    const isPasswordCorrect = user.password === password;
+    const isPasswordCorrect = user.checkPassword(password); //devuelve un valor booleano 
     if (!isPasswordCorrect) {
       return { error: 'Contraseña incorrecta' };
     }
@@ -63,7 +63,7 @@ const logInController = async (req) => {
 
   } catch (error) {
     console.error('Error al iniciar sesión:', error);
-    throw new Error('Error interno al iniciar sesión'); // Relanzar el error para que se maneje en el handler
+    return {error : 'hubo un error'}
   }
 };
 

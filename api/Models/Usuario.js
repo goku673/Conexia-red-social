@@ -38,6 +38,12 @@ module.exports = (sequelize) => {
     isSuperAdmin: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
+    },
+    resenia : {
+       type : DataTypes.STRING,
+    },
+    imagenURLPortada : {
+       type : DataTypes.STRING,
     }
   });
 
