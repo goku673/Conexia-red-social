@@ -15,10 +15,11 @@ const logGoogle = async (req, res) => {
                 text: 'Estamos contentos de que te hayas unido a nuestra aplicación. ¡Disfrutala!',
                 html: `
             <div>
-                 <h1>BIENBENIDO ${user.nombre} a nuestra red social </h1>
+                 
                  <br>
                  <p>Estamos  contentos de que te hayas unido a nuestra plataforma, Disfrutala </p>
                  <p>Espero que  te diviertas! </p>
+                 <img src = 'https://firebasestorage.googleapis.com/v0/b/red-conexia.appspot.com/o/conexia.png?alt=media&token=1c98bfd4-79c7-4eae-a54e-1e1b4a6d5001' alt = "cargaIMG"/>
             </div>
          `
             }; // con esto ya configuramos nuestro objeto de correo,

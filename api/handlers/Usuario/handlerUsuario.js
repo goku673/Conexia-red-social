@@ -86,6 +86,7 @@ const logIn = async (req, res) => {
     const user = await logInController(req);
     
     if(user.error) {
+      console.log(user)
       return res.status(400).json({ error: user.error });
     }
     
