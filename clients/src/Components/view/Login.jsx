@@ -33,8 +33,10 @@ const Login = () => {
           toast.error('Usuario no encontrado');
       }else  if(usuario.user) {
          console.log('todo correcto');
-         navigate('/profile')
          toast.success('inicio de sesion exitoso')
+          setTimeout ( () => { 
+            navigate('/profile')
+          },4000);
       }
    },[usuario]);
 

@@ -5,10 +5,13 @@ import conexia from '../../img/conexia.png';
 import { registerUser } from '../Redux/slice';
 import { useDispatch,useSelector} from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
  const RegisterUser = () => {
-    const user = useSelector((state) => state.usuario )
+    const usuario = useSelector((state) => state.usuario);
+    console.log("mi slice usuario",usuario);
     const  dispath = useDispatch(); 
+    const navigate = useNavigate();
     const [nombre, setNombre] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -25,14 +28,17 @@ import { ToastContainer, toast } from 'react-toastify';
       
     };
 
-
-     useEffect( () => {
-          if(user.erro){
-            toast.error('No se puedo registrar los datos');
-          }else if (user.user){
-            toast.success('usuario registrado con éxito');
-          }
-     },[user])
+    useEffect(() => {
+      if (usuario.error) {
+        toast.error('No se pudo registrar los datos');
+      } else if (usuario.userRegister) {
+        toast.success('Usuario registrado con éxito');
+        setTimeout ( () => {
+          navigate('/');
+        },4000);
+      
+      }
+    }, [usuario,navigate]);
 
     const validarErrores = (nombre, email, password, imagen) => {
       const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
@@ -69,6 +75,7 @@ import { ToastContainer, toast } from 'react-toastify';
         toast.error(validar);
       }else {
          await dispath(registerUser({nombre,email,password,imagen}));
+       
       }
 
  } 

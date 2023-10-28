@@ -1,13 +1,61 @@
-const { Publicacion } = require('../../DB')
+const { Publicacion } = require('../../DB');
+const dotenv = require('dotenv');
+dotenv.config();
+const {Storage} = require('@google-cloud/storage');
+const path = require('path');
+
+
+const  storage = new Storage({
+    projectId : 'red-conexia',
+    keyFilename : './firebase-conexia.json'
+})
+
+const bucket  = storage.bucket(process.env.MY_BUCKET_URL);
 
 const createPostController = async (req) => {
  try {
-    const { review, imagenURL, user_id} = req.body;
+    const { review, user_id} = req.body;
+    const imagen = req.file;
+    let imagenURL = null;
 
-    if(review && imagenURL&&user_id){
+    // Si se proporciona una imagen, la sube a Firebase
+    if (imagen) {
+      let remoteFileName = imagen.filename;
+
+      // Obtiene la extensión del archivo
+      const extension = path.extname(imagen.path);
+
+      // Establece el tipo de contenido basándose en la extensión del archivo
+      // let contentType;
+      // console.log("Extension del archivo: ", extension);
+      // switch(extension) {
+      //    case '.jpeg':
+      //    case '.jpg':
+      //      contentType = 'image/jpeg';
+      //      break;
+      //    case '.png':
+      //      contentType = 'image/png';
+      //      break;
+      //    case '.gif':
+      //      contentType = 'image/gif';
+      //      break;
+      //    default:
+      //      throw new Error('Tipo de archivo no soportado');
+      //  }
+
+      await bucket.upload(imagen.path, {
+        destination: remoteFileName,
+        public: true,
+        metadata: { contentType: 'image/jpeg' },
+      });
+
+      imagenURL = `https://firebasestorage.googleapis.com/v0/b/red-conexia.appspot.com/o/${encodeURIComponent(remoteFileName)}?alt=media`;
+    }
+
+    if((review || imagenURL) && user_id){
       const post = await Publicacion.create({
          review,
-         imagenURL,
+        imagenURL,
          user_id
      });
       return post;

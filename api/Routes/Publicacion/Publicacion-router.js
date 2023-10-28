@@ -10,10 +10,12 @@ const {
   getHiddenPostsByUser,
   updatePost
 } = require('../../handlers/Publicacion/handlerPublicacion');
+const upload = require('../../services/multer');
 
 const publicacionRouter = Router();
 
-publicacionRouter.post('/create', createPost);
+//router.post("/register",upload.single('imagen'), userRegister);
+publicacionRouter.post('/create',upload.single('imagen'), createPost);
 publicacionRouter.get('/all', getAllPosts);
 publicacionRouter.get('/byUserId/:user_id', getAllPostsByUser);
 publicacionRouter.get('/byPostId/:idPublicacion', getPostById);

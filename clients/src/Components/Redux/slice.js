@@ -40,7 +40,7 @@ export const registerUser = createAsyncThunk('register/user', async ({nombre,ema
 
 const usuario = createSlice({
     name : 'usuario',
-    initialState : { user : null , status : 'idle', error : null},
+    initialState : { user : null , status : 'idle', error : null ,userRegister : null},
     reducers :{},
     extraReducers : builder => {
           builder
@@ -64,6 +64,10 @@ const usuario = createSlice({
           .addCase(registerUser.rejected,(state,action) =>{
               state.status = 'failed';
               state.error  = action;
+          })
+          .addCase(registerUser.fulfilled, (state,action) => {
+              state.status = 'succeeded';
+              state.userRegister =action.payload;
           })
     }
 })
