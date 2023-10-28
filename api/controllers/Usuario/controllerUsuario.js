@@ -36,7 +36,7 @@ const userRegisterController = async (req) => {
     });
 
     const imagenURL = `https://firebasestorage.googleapis.com/v0/b/red-conexia.appspot.com/o/${encodeURIComponent(remoteFileName)}?alt=media`
-    const newUser = await Usuario.create({ nombre, email , password, imagenURL,resenia,imagenURLPortada});
+    const newUser = await Usuario.create({ nombre, email , password, imagenURL});
 
     return newUser
   } catch (error) {
@@ -143,7 +143,7 @@ const getUserByNameController = async (req) => {
 const updateUserController = async (req) => {
   try {
     const { id } = req.params;
-    const { nombre, imagenURL } = req.body;
+    const { nombre, imagenURL,imagenURLPortada,resenia} = req.body;
     const user = await Usuario.findByPk(id);
     if (!user) {
       return { error: 'El usuario no existe' };
