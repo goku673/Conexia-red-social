@@ -1,10 +1,15 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const Profile = () => {
-  const usuario = useSelector((state) => state.usuario.user);
-
+  const person   = Cookies.get('user');
+  const us =JSON.parse(person);
+  console.log(us.imagenURLPortada);
+  console.log(JSON.parse(person));
+  const usuario = useSelector((state) => state.usuario);
+   console.log('.....',usuario);
   return (
     <div className="flex flex-col items-center p-8 bg-white shadow-md rounded-lg">
       <h2 className="mb-2 text-xl font-bold text-color6">Mi Perfil</h2>
@@ -13,13 +18,13 @@ const Profile = () => {
         alt="Cover"
         className="w-full h-32 object-cover"
       />
-      <img
+      {/* <img
         src={usuario.imagenURL}
         alt="Profile"
         className="w-32 h-32 mb-4 -mt-16 border-4 border-white rounded-full"
-      />
-      <h2 className="mb-2 text-xl font-bold text-color6">{usuario.nombre}</h2>
-      <p className="mb-4 text-gray-600">{usuario.email}</p>
+      /> */}
+      {/* <h2 className="mb-2 text-xl font-bold text-color6">{usuario.nombre}</h2> */}
+      {/* <p className="mb-4 text-gray-600">{usuario.email}</p> */}
       <p className="mb-4 text-center text-color6">Soy Fanatico de los camballeros del Zodiaco y siempre sere fanatico de los camballeros del Zodiaco Por siempre </p>
       <Link
         to="/edit-profile"

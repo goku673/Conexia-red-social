@@ -19,7 +19,7 @@ const logGoogle = async (req, res) => {
                  <br>
                  <p>Estamos  contentos de que te hayas unido a nuestra plataforma, Disfrutala </p>
                  <p>Espero que  te diviertas! </p>
-                 <img src = 'https://firebasestorage.googleapis.com/v0/b/red-conexia.appspot.com/o/conexia.png?alt=media&token=1c98bfd4-79c7-4eae-a54e-1e1b4a6d5001' alt = "cargaIMG"/>
+                 <img src ="https://firebasestorage.googleapis.com/v0/b/red-conexia.appspot.com/o/conexia.png?alt=media&token=1c98bfd4-79c7-4eae-a54e-1e1b4a6d5001" alt = "cargaIMG"/>
             </div>
          `
             }; // con esto ya configuramos nuestro objeto de correo,
@@ -31,9 +31,10 @@ const logGoogle = async (req, res) => {
                 console.log('Error al enviar el correo', error.response.body);
             });
              // convertimos el objeto a json  
+             console.log("mi usuaio ", user);
              res.cookie('user', JSON.stringify(user),{ maxAge: 7 * 24 * 60 * 60 * 1000 });
 
-            res.redirect(`http://localhost:5173`);
+            res.redirect(`http://localhost:5173/profile`);
         } else {
             return res.status(401).json({ message: 'autenticacion con google fallida' });
         }
