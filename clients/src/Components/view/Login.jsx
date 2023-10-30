@@ -72,7 +72,7 @@ const Login = () => {
   const handleLoginGoogle = () => {
       window.location.href = 'http://localhost:3007/auth/logGoogle';
       dispath(googleAuth());
-      navigate('/profile'); 
+      
   }
 
   return (
