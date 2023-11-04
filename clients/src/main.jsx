@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './Components/Redux/store';
 import 'react-toastify/dist/ReactToastify.css';
+import Modal from 'react-modal';
 
 const root = document.getElementById('root');
 

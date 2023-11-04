@@ -93,7 +93,10 @@ const logIn = async (req, res) => {
     return res.status(200).json({ message: 'Inicio de sesión exitoso', userID: user.id, 
     imagenURL: user.imagenURL, 
     nombre: user.nombre, 
-    email: user.email 
+    email: user.email,
+    fechaRegistro : user.fechaRegistro,
+    resenia : user.resenia,
+    imagenURLPortada : user.imagenURLPortada,
   });
 
   } catch (error) {
@@ -144,7 +147,7 @@ const updateUser = async (req, res) => {
       return res.status(400).json({ error: user.error });
     }
     
-    return res.status(200).json({ message: 'Usuario actualizado' });
+    return res.status(200).json({ message: 'Usuario actualizado',user});
     
   } catch (error) {
     console.error('Error en el handler de actualizar usuario:', error);

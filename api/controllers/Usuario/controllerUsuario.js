@@ -3,7 +3,7 @@ const { Op } = require('sequelize');
 //const bucket =require('../../firebase.js');
 const dotenv = require('dotenv');
 // configuracion   SDK de google  cloud para interactuar con firebase y obtener la referencia al bucket
-const {Storage} = require('@google-cloud/storage');
+const { Storage } = require('@google-cloud/storage');
 dotenv.config();
 const storage = new Storage({
   projectId: 'red-conexia',
@@ -14,9 +14,9 @@ const bucket = storage.bucket(process.env.MY_BUCKET_URL);
 
 const userRegisterController = async (req) => {
   try {
-    const { nombre, email, password,} = req.body;
+    const { nombre, email, password, } = req.body;
     const imagen = req.file;
-    
+
     // Verificar si el usuario ya existe en la base de datos
     const existingUser = await Usuario.findOne({ where: { email } });
     if (existingUser) {
@@ -27,7 +27,7 @@ const userRegisterController = async (req) => {
 
     // subo la imagen a firebase
     let remoteFileName = imagen.filename;
-    let file = bucket.file(remoteFileName);
+
 
     await bucket.upload(imagen.path, {
       destination: remoteFileName,
@@ -36,12 +36,12 @@ const userRegisterController = async (req) => {
     });
 
     const imagenURL = `https://firebasestorage.googleapis.com/v0/b/red-conexia.appspot.com/o/${encodeURIComponent(remoteFileName)}?alt=media`
-    const newUser = await Usuario.create({ nombre, email , password, imagenURL});
-
-    return newUser
+    const newUser = await Usuario.create({ nombre, email, password, imagenURL });
+    console.log("seria mi nuevo usuario", newUser._previousDataValues)
+    return newUser._previousDataValues;
   } catch (error) {
     console.error('Error al registrar usuario:', error);
-    return {error : error.message};
+    return { error: error.message };
   }
 };
 
@@ -54,16 +54,17 @@ const logInController = async (req) => {
       return { error: 'Credenciales incorrectas' };
     }
     // await Usuario.findOne({ where: { password } });
-  
+
     const isPasswordCorrect = user.checkPassword(password); //devuelve un valor booleano 
     if (!isPasswordCorrect) {
       return { error: 'Contraseña incorrecta' };
     }
-    return user;
+    console.log("si entro registrandome este es el usuario", user);
+    return user._previousDataValues;
 
   } catch (error) {
     console.error('Error al iniciar sesión:', error);
-    return {error : 'hubo un error'}
+    return { error: 'hubo un error' }
   }
 };
 
@@ -139,16 +140,38 @@ const getUserByNameController = async (req) => {
   }
 };
 
+// aqui tambien tengo que poner un firebase para la subida de imagenes 
 
 const updateUserController = async (req) => {
   try {
     const { id } = req.params;
-    const { nombre, imagenURL,imagenURLPortada,resenia} = req.body;
+    const { nombre, resenia } = req.body;
+    const imagenPerfil = req.files.imagenPerfil;
+    const imagenPortada = req.files.imagenPortada;
     const user = await Usuario.findByPk(id);
     if (!user) {
       return { error: 'El usuario no existe' };
     }
-    await user.update({ nombre, imagenURL });
+    // subo imagen perfil a firebase
+    let fileNamePerfil = imagenPerfil[0].filename;
+    await bucket.upload(imagenPerfil[0].path, {
+      destination: fileNamePerfil,
+      public: true,
+      metadata: { contentType: 'image/jpeg' },
+    });
+
+    // subo la imagen portada a firebase
+    let fileNamePortada = imagenPortada[0].filename;
+    await bucket.upload(imagenPortada[0].path, {
+      destination: fileNamePortada,
+      public: true,
+      metadata: { contentType: 'image/jpeg' },
+    });
+
+    const imagenURL = `https://firebasestorage.googleapis.com/v0/b/red-conexia.appspot.com/o/${encodeURIComponent(fileNamePerfil)}?alt=media`
+    const imagenURLPortada = `https://firebasestorage.googleapis.com/v0/b/red-conexia.appspot.com/o/${encodeURIComponent(fileNamePortada)}?alt=media`
+
+    await user.update({ nombre, resenia, imagenURL, imagenURLPortada });
     return user;
 
   } catch (error) {
