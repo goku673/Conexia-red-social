@@ -5,30 +5,13 @@ import EditProfile from '../Profile/EditProfile';
 import { useState } from 'react';
 const UserProfile = () => {
 
-   const [modalIsOpen ,setModalIsOpen] = useState(false);
-
-   const openModal  = () => {
-     setModalIsOpen(true);
-   }
-   const closeModal = () => {
-     setModalIsOpen(false);
-   }
+  
     return (
         <div className="min-h-screen bg-color1 flex flex-col md:flex-row">
           <div className="w-full md:w-1/4 bg-color2 p-4">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center justify-center space-x-4">
               <Profile/>
-              <button onClick={openModal} className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
-            Editar perfil
-          </button>
-          <Modal
-            isOpen={modalIsOpen}
-            onRequestClose={closeModal}
-            contentLabel="Editar perfil"
-          >
-            <EditProfile/>
-            <button onClick={closeModal}>Cerrar</button>
-          </Modal>
+           
             </div>
             <div className="mt-4">
               <h3 className="text-color8">Your Posts</h3>

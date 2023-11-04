@@ -12,12 +12,11 @@ export const userLogin = createAsyncThunk('usuario/login', async ({email,passwor
       return response.data;
 })
 
-export const googleAuth  = createAsyncThunk('auth/google', async () => {
+export const googleAuth  = createAsyncThunk('auth/google',  () => {
        const userCookie = Cookies.get('user');
-       console.log("hola mundo ",userCookie);
-       if(userCookie){
-          console.log("informacion del usuario de mi cookie",JSON.parse(userCookie));
-          return JSON.parse(userCookie);
+       const myUser =  JSON.parse(userCookie);
+       if(myUser){
+           return  myUser
        }
        throw new Error('no user cookie found');
 })

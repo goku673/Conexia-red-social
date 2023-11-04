@@ -1,50 +1,79 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-//import { updateUserProfile } from './userSlice';
+import { ToastContainer,toast } from 'react-toastify';
 
 const EditProfile = () => {
-//   const user = useSelector((state) => state.user);
-//   const [name, setName] = useState(user.name);
-//   const [imageUrl, setImageUrl] = useState(user.imageUrl);
-//   const [coverImageUrl, setCoverImageUrl] = useState(user.coverImageUrl);
-//   const [bio, setBio] = useState(user.bio);
-//   const dispatch = useDispatch();
+  const usuario = useSelector((state) => state.usuario.user);
+  const [nombre, setNombre] = useState('');
+  const [resenia, setResenia] = useState('');
+  const [imagenPerfil, setImagenPerfil] = useState(null);
+  const [imagenPortada, setImagenPortada] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleResenia = (e) => {
+      const wordCount = e.target.value.length;
+     ///  para la cantidad de palabras const filteredWordCount =   wordCount.filter(  function(n){ return n != '' }).length; 
+       if( wordCount <= 100){
+             setResenia(e.target.value);
+       }else {
+           toast.error("Tu reseña  no puede contener más de 100 caracteres");
+       }
+  }
+
+  const onSubmitEvent = async (e) => {
     e.preventDefault();
-    //dispatch(updateUserProfile({ name, imageUrl, coverImageUrl, bio }));
-  };
+    console.log({ nombre, resenia, imagenPerfil, imagenPortada });
+    const formData = new FormData();
+    formData.append('nombre',nombre);
+    formData.append('resenia',resenia);
+    formData.append('imagenPerfil',imagenPerfil);
+    formData.append('imagenPortada',imagenPortada);
+
+    try {
+      
+      const response = await axios.put(`http://localhost:3007/user/updateUser/${usuario.userID}`, formData);
+  
+      // Verificar si la solicitud fue exitosa
+      console.log('Usuario actualizado exitosamente:', response.data);
+    } catch (error) {
+      console.error('Error al actualizar usuario:', error.response.statusText);
+    }
+  }
+  
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-color1 py-2 sm:px-6 lg:px-8">
-      <div className="px-8 py-6 mt-8 text-left bg-color4 shadow-md sm:rounded-lg">
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label className="block text-sm font-medium text-color2">Nombre</label>
-            <input type="text"  className="mt-1 block w-full rounded-md border-color5 shadow-sm focus:border-color19 focus:ring focus:ring-color19 focus:ring-opacity-50" />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-color2">URL de la imagen del perfil</label>
-            <input type="text"  className="mt-1 block w-full rounded-md border-color5 shadow-sm focus:border-color19 focus:ring focus:ring-color19 focus:ring-opacity-50" />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-color2">URL de la imagen de portada</label>
-            <input type="text"  className="mt-1 block w-full rounded-md border-color5 shadow-sm focus:border-color19 focus:ring focus:ring-color19 focus:ring-opacity-50" />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-color2">Reseña</label>
-            <textarea className="mt-1 block w-full rounded-md border-color5 shadow-sm focus:border-color19 focus:ring focus:ring-color19 focus:ring-opacity-50" />
-          </div>
-          <div className="mt-4">
-            <button type="submit" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-color19 hover:bg-color12 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-color19">
-              Actualizar perfil
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
+    <div className="bg-color1 py-8 px-4">
 
-};
+      <h1 className="text-3xl font-semibold text-color4 mb-4">Edición de Perfil</h1>
+      <form onSubmit={onSubmitEvent} className="bg-white rounded-lg shadow-md p-6">
+        <div className="mb-4">
+          <label className="text-xl font-semibold text-color4">Editar Nombre</label>
+          <input type="text" placeholder="Editar nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} className="w-full rounded-lg border border-color3 py-2 px-4 mt-2" />
+        </div>
+
+        <div className="mb-4">
+          <label className="text-xl font-semibold text-color4">Editar Reseña</label>
+          <textarea type="text" placeholder="Editar reseña" value={resenia} onChange={(e) => handleResenia(e)} className="w-full rounded-lg border border-color3 py-2 px-4 mt-2" />
+          <span>{resenia.length}/100</span>
+        </div>
+
+        <div className="mb-4">
+          <h3 className="text-2xl font-semibold text-color4">Editar Foto de Perfil</h3>
+          <input type="file" placeholder="Editar foto de perfil" onChange={(e) => setImagenPerfil(e.target.files[0])} className="mt-2" />
+        </div>
+
+        <div className="mb-4">
+          <h3 className="text-2xl font-semibold text-color4">Editar Foto de Portada</h3>
+          <input type="file" placeholder="Editar foto de portada" onChange={(e) => setImagenPortada(e.target.files[0])} className="mt-2" />
+        </div>
+
+        <button type="submit" className="bg-color2 text-white font-semibold py-2 px-4 rounded-lg">
+          Guardar Cambios
+        </button>
+      </form>
+        <ToastContainer/>
+    </div> 
+  );
+}
 
 export default EditProfile;

@@ -16,7 +16,7 @@ const opcionesCors = {
   origin: dominioPermitido,
   credentials: true,
   allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE']
+  methods: ['GET','POST','PUT','DELETE']
 }
 servidor.use(cors(opcionesCors));
 
