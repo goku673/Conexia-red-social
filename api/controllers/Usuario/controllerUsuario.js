@@ -6,8 +6,11 @@ const dotenv = require('dotenv');
 const { Storage } = require('@google-cloud/storage');
 dotenv.config();
 const storage = new Storage({
-  projectId: 'red-conexia',
-  keyFilename: './firebase-conexia.json'
+    projectId : process.env.PROYECT_ID,
+    credentials : {
+        client_email : process.env.CLIENT_EMAIL,
+        private_key : process.env.PRIVATE_KEY.replace(/\\n/g, '\n'),
+    }
 });
 
 const bucket = storage.bucket(process.env.MY_BUCKET_URL);
