@@ -38,11 +38,25 @@ export const registerUser = createAsyncThunk('register/user', async ({nombre,ema
         return response.data;
 })
 
+// para aactualizar mi usuario  
+
+export const  updateUser =  createAsyncThunk('usuario/update', async (userData, {getState}) => {
+         const {userID} =getState().usuario.user;
+         console.log(userID);
+         const response = await axios.put(`http://localhost:3007/user/updateUser/${userID}`,userData)
+         console.log(response.data);
+         return response.data;
+})
+
 
 const usuario = createSlice({
     name : 'usuario',
-    initialState : { user : null , status : 'idle', error : null ,userRegister : null},
-    reducers :{},
+    initialState : { user : null , status : 'idle', error : null ,userRegister : null, statusUpdate : 'idle'},
+    reducers :{
+         resetStatusUpdate : (state) => {
+              state.statusUpdate = 'idle';
+         }
+    },
     extraReducers : builder => {
           builder
           .addCase(userLogin.pending, (state) =>{
@@ -70,8 +84,19 @@ const usuario = createSlice({
               state.status = 'succeeded';
               state.userRegister =action.payload;
           })
+          .addCase(updateUser.fulfilled, (state,action) => {
+             state.statusUpdate  = 'succeeded';
+             state.user = action.payload;
+          })
+          .addCase(updateUser.pending, (state) => {
+              state.statusUpdate = 'loading';
+          })
+          .addCase(updateUser.rejected , (state,action) => {
+              state.statusUpdate   = 'failed';
+              state.error = action.error.message
+          })
     }
 })
 
-
+export const {resetStatusUpdate} = usuario.actions;
 export default usuario.reducer;

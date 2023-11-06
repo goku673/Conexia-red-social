@@ -9,6 +9,7 @@ const { userRegisterController,
 } = require('../../controllers/Usuario/controllerUsuario');
 const enviarEmail  = require('@sendgrid/mail');
 const dotenv       = require('dotenv');
+const { use } = require('passport');
 dotenv.config();
 
 enviarEmail.setApiKey(process.env.CONEXIA_API_KEY);
@@ -90,7 +91,8 @@ const logIn = async (req, res) => {
       return res.status(400).json({ error: user.error });
     }
     
-    return res.status(200).json({ message: 'Inicio de sesión exitoso', userID: user.id, 
+    return res.status(200).json({ message: 'Inicio de sesión exitoso',
+    userID: user.id, 
     imagenURL: user.imagenURL, 
     nombre: user.nombre, 
     email: user.email,
@@ -146,8 +148,15 @@ const updateUser = async (req, res) => {
     if(user.error) {
       return res.status(400).json({ error: user.error });
     }
-    
-    return res.status(200).json({ message: 'Usuario actualizado',user});
+    console.log(user);
+    return res.status(200).json({ message: 'Usuario actualizado',
+    userID: user.id, 
+    imagenURL: user.imagenURL, 
+    nombre: user.nombre, 
+    email: user.email,
+    fechaRegistro : user.fechaRegistro,
+    resenia : user.resenia,
+    imagenURLPortada : user.imagenURLPortada,});
     
   } catch (error) {
     console.error('Error en el handler de actualizar usuario:', error);
