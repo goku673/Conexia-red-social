@@ -26,25 +26,25 @@ const Profile = () => {
   const fechaRegistro = new Date(usuario.user.fechaRegistro).toLocaleDateString();
 
   return (
-    <div className="flex flex-col items-center p-16 bg-color4 shadow-md rounded-lg">
-      <div className="relative w-full h-32">
+    <div className="bg-color18 rounded-lg shadow-lg max-w-sm mx-auto">
+      <div className="relative w-full h-44">
         <img
           src={usuario.user.imagenURLPortada || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmM9klXYslww7TPuLWfEUOoQMJk89GBVTI7A&usqp=CAU"}
           alt="Cover"
-          className="w-full h-full object-cover rounded-t-lg"
+          className="w-full h-48 rounded-t-lg object-cover"
         />
         <img
           src={usuario.user.imagenURL || "default_profile_image_url"}
           alt="Profile"
-          className="absolute bottom-0 -mb-6 w-24 h-24 border-4 border-color1 rounded-full"
+          className="relative -top-20 w-32 h-32 mx-auto rounded-full border-4 border-color1"
         />
       </div>
-      <h2 className="mt-8 mb-2 text-xl font-bold text-color5">{usuario.user.nombre}</h2>
-      <p className="mb-4 text-color5">{usuario.user.email}</p>
-      <p className="mb-4 text-center text-color5">{usuario.user.resenia || "No hay reseña disponible"}</p>
-      <p className="mb-4 text-sm text-color2">Se unió el {fechaRegistro}</p>
+      <h2 className="mt-16 mb-4 text-2xl font-bold text-center text-color5">{usuario.user.nombre}</h2>
+      <p className="text-center text-color2">{usuario.user.email}</p>
+      <p className="px-6 mt-4 mb-8 text-center text-color3">{usuario.user.resenia || "No hay reseña disponible"}</p>
+      <p className="text-center text-xs text-color3">Se unió el {fechaRegistro}</p>
 
-      <button onClick={() => setModalIsOpen(true)} className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
+      <button onClick={() => setModalIsOpen(true)} className="block mx-auto mt-8 px-4 py-2 text-white bg-color5 rounded">
         Editar perfil
       </button>
       <Modal
