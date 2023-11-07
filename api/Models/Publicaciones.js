@@ -23,6 +23,12 @@ module.exports = (sequelize) => {
     oculto: {
       type: DataTypes.BOOLEAN,
       defaultValue: false, // Por defecto, la publicación no está oculta
+    },
+    colorFondo : {
+        type  : DataTypes.STRING,
+    },
+    colorTexto : {
+      type :DataTypes.STRING,
     }
   });
 };

@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Profile from '../Profile/Profile';
 import Modal from  'react-modal';
-import EditProfile from '../Profile/EditProfile';
 import { useState } from 'react';
-const UserProfile = () => {
+import Publicaciones from './Publicaciones';
 
-  
+
+const UserProfile = () => {
+   
+     
     return (
         <div className="min-h-screen bg-color1 flex flex-col md:flex-row">
           <div className="w-full md:w-1/4 bg-color2 p-4">
             <div className="flex items-center justify-center space-x-4">
               <Profile/>
-           
             </div>
             <div className="mt-4">
               <h3 className="text-color8">Your Posts</h3>
@@ -20,8 +21,7 @@ const UserProfile = () => {
           </div>
           <div className="w-full md:w-1/2 bg-color3 p-4 overflow-auto" style={{ maxHeight: '100vh' }}>
             <h2 className="text-color9">Feed</h2>
-            { /*  todos mis post aqui */ }
-            {[...Array(100)].map((_, i) => <p key={i}>Hola</p>)}
+              <Publicaciones/>
           </div>
           <div className="w-full md:w-1/4 bg-color4 p-4 overflow-auto "  style={{ maxHeight: '100vh' }}>
             <h2 className="text-color10">Messages</h2>

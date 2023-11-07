@@ -1,20 +1,26 @@
-const { Publicacion } = require('../../DB');
+const { Publicacion,Usuario,Emoticon,Comentario} = require('../../DB.js');
+
 const dotenv = require('dotenv');
 dotenv.config();
 const {Storage} = require('@google-cloud/storage');
-const path = require('path');
+
+
 
 
 const  storage = new Storage({
-    projectId : 'red-conexia',
-    keyFilename : './firebase-conexia.json'
-})
+    projectId : process.env.PROYECT_ID,
+    credentials : {
+         private_key : process.env.PRIVATE_KEY.replace(/\\n/g, '\n'),
+         client_email : process.env.CLIENT_EMAIL,
+    }
+});
 
 const bucket  = storage.bucket(process.env.MY_BUCKET_URL);
 
 const createPostController = async (req) => {
  try {
-    const { review, user_id} = req.body;
+   const { review, user_id, colorFondo, colorTexto } = req.body; // Recoger los nuevos campos
+
     const imagen = req.file;
     let imagenURL = null;
 
@@ -23,41 +29,26 @@ const createPostController = async (req) => {
       let remoteFileName = imagen.filename;
 
       // Obtiene la extensión del archivo
-      const extension = path.extname(imagen.path);
-
-      // Establece el tipo de contenido basándose en la extensión del archivo
-      // let contentType;
-      // console.log("Extension del archivo: ", extension);
-      // switch(extension) {
-      //    case '.jpeg':
-      //    case '.jpg':
-      //      contentType = 'image/jpeg';
-      //      break;
-      //    case '.png':
-      //      contentType = 'image/png';
-      //      break;
-      //    case '.gif':
-      //      contentType = 'image/gif';
-      //      break;
-      //    default:
-      //      throw new Error('Tipo de archivo no soportado');
-      //  }
-
       await bucket.upload(imagen.path, {
         destination: remoteFileName,
         public: true,
-        metadata: { contentType: 'image/jpeg' },
+        metadata: { contentType: 'image/jpeg' }, // soporta imangenes png jpg y gif
       });
 
       imagenURL = `https://firebasestorage.googleapis.com/v0/b/red-conexia.appspot.com/o/${encodeURIComponent(remoteFileName)}?alt=media`;
     }
+    // para los emoticones 
+   
 
     if((review || imagenURL) && user_id){
       const post = await Publicacion.create({
          review,
         imagenURL,
-         user_id
+         user_id,
+         colorFondo, // Guardar el color de fondo
+         colorTexto, // Guardar el color del texto
      });
+
       return post;
     }
     return {error : "Error en el posteo de publicacion"};
@@ -69,20 +60,105 @@ const createPostController = async (req) => {
 
 const getAllPostsController = async () => {
    try {
-      const posts = await Publicacion.findAll({ where: { oculto: false } });
+      const posts = await Publicacion.findAll({
+        where: { oculto: false },
+        include: [
+           {
+             model : Usuario,
+             as : 'usuarioQuienPublico' ,
+             attributes : ['nombre','imagenURL']
+           },
+          {
+            model: Comentario,
+            attributes :['idComentario','date','comentario','idUser','idPublicacion'],
+            include: [
+              {
+                model: Usuario,
+                as: 'usuarioComentario', // Usamos el alias definido en la asociación
+                attributes : ['id','nombre','imagenURL'],
+              }
+            ]
+          },
+          {
+            model: Emoticon,
+            attributes :['typeEmoticon'],
+            include: [
+              {
+                model: Usuario,
+                as: 'usuarioEmoticon', // Usamos el alias definido en la asociación
+                attributes : ['id','nombre','imagenURL']
+              }
+            ]
+          }
+        ]
+      });
 
       if (posts.length === 0) {
          return { error: 'No se han encontrado publicaciones' };
       }
-      
-      return posts;
+
+      // Usamos el método get({ plain: true }) para obtener solo los datos reales
+      const plainPosts = posts.map(post => post.get({ plain: true }));
+
+      console.log("hola mundo", plainPosts);
+      return plainPosts;
 
    } catch (error) {
       console.error('Error al obtener posts:', error);
       throw error; // Relanzar el error para que se maneje en el handler
    }
 };
+// esto es prueba 
+const getPostController1 = async () => {
+   try {
+      const posts = await Publicacion.findAll({
+        where: { oculto: false },
+        include: [
+         {
+           model : Usuario,
+           as : 'usuarioQuienPublico' ,
+           attributes : ['nombre','imagenURL']
+         },
+        {
+          model: Comentario,
+          attributes :['idComentario','date','comentario','idUser','idPublicacion'],
+          include: [
+            {
+              model: Usuario,
+              as: 'usuarioComentario', // Usamos el alias definido en la asociación
+              attributes : ['id','nombre','imagenURL']
+            }
+          ]
+        },
+        {
+          model: Emoticon,
+          attributes :['typeEmoticon'],
+          include: [
+            {
+              model: Usuario,
+              as: 'usuarioEmoticon', // Usamos el alias definido en la asociación
+              attributes : ['id','nombre','imagenURL']
+            }
+          ]
+        }
+      ]
+      });
 
+      if (posts.length === 0) {
+         return { error: 'No se han encontrado publicaciones' };
+      }
+
+      // Usamos el método get({ plain: true }) para obtener solo los datos reales
+      const plainPosts = posts.map(post => post.get({ plain: true }));
+
+      console.log("hola mundo", plainPosts);
+      return plainPosts;
+
+   } catch (error) {
+      console.error('Error al obtener posts:', error);
+      throw error; // Relanzar el error para que se maneje en el handler
+   }
+}
 
 
 const getHiddenPostsByUserController = async (req) => {
@@ -234,5 +310,6 @@ module.exports = {
    showPostController,
    deletePostByIdController,
    getHiddenPostsByUserController,
-   updatePostController
+   updatePostController,
+   getPostController1 // esto es prueba
 };

@@ -8,7 +8,8 @@ const {
   showPost,
   deletePostById,
   getHiddenPostsByUser,
-  updatePost
+  updatePost,
+  getPost1
 } = require('../../handlers/Publicacion/handlerPublicacion');
 const upload = require('../../services/multer');
 
@@ -24,6 +25,7 @@ publicacionRouter.put('/show/:idPublicacion', showPost);
 publicacionRouter.delete('/delete/:idPublicacion', deletePostById);
 publicacionRouter.get('/getHiddenPostsByUserId/:user_id', getHiddenPostsByUser);
 publicacionRouter.put('/update/:idPublicacion', updatePost);
+publicacionRouter.get('/prueba',getPost1)
 
 //ruta para actualizar la informacion de una publicacion
 // cantidad de likes por publicacion
