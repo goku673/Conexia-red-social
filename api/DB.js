@@ -46,6 +46,7 @@ Usuario.hasMany(Publicacion, {
   foreignKey: "user_id", // La clave foránea en Publicacion que referencia a Usuario
 });
 Publicacion.belongsTo(Usuario, {
+  as : 'usuarioQuienPublico',
   foreignKey: "user_id", // La clave foránea en Publicacion que referencia a Usuario
 });
 
@@ -55,9 +56,11 @@ Publicacion.belongsTo(Usuario, {
 //   foreignKey: 'idUser', // La clave foránea en Usuario que referencia a Comentario
 // })
 Comentario.belongsTo(Usuario, {
+  as : 'usuarioComentario',
   foreignKey: 'idUser', // La clave foránea en Comentario que referencia a Usuario
 });
 Comentario.belongsTo(Publicacion, {
+  
   foreignKey: 'idPublicacion', // La clave foránea en Comentario que referencia a Publicacion
 });
 
@@ -91,12 +94,16 @@ Seguidor.belongsTo(Usuario, {
 
 // Asociones entre Emoticones y Publicaciones y su Usuario
 Emoticon.belongsTo(Usuario, {
+  as : 'usuarioEmoticon',
   foreignKey: 'idUser', // La clave foránea en Emoticon que referencia a Usuario
 })
 Emoticon.belongsTo(Publicacion, {
   foreignKey: 'idPublicacion', // La clave foránea en Emoticon que referencia a Publicacion
 });
 
+Publicacion.hasMany(Emoticon,{
+   foreignKey : 'idPublicacion', // la clave foranea en publicacion que hace referencia a Emoticon
+})
 
 sequelize.authenticate()
   .then(() => {

@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
-
+import { traerPublicaciones } from '../Redux/slicePublicaciones';
 
 const Login = () => {
   const dispath = useDispatch();
@@ -64,7 +64,7 @@ const Login = () => {
       toast.error(validar);
     } else {
       await dispath(userLogin({ email, password }));
-     
+       dispath(traerPublicaciones());
     }
 
   }
@@ -72,7 +72,7 @@ const Login = () => {
   const handleLoginGoogle = () => {
       window.location.href = 'http://localhost:3007/auth/logGoogle';
       dispath(googleAuth());
-      
+      dispath(traerPublicaciones());
   }
 
   return (
