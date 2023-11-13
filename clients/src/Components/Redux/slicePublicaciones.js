@@ -6,11 +6,28 @@ export const  traerPublicaciones = createAsyncThunk('get/allpublicaciones', asyn
       return response.data;
 })
 
-
+export const publicar  =  createAsyncThunk('post/publicaciones', async ({review,colorFondo,colorTexto,imagen},{getState}) => {
+    const formData = new FormData();
+    const user_id = getState().usuario.user.userID;
+    console.log( {review,user_id,colorFondo,colorTexto,imagen});
+    formData.append('review',review);
+    formData.append('user_id',user_id);
+    formData.append('colorFondo',colorFondo);
+    formData.append('colorTexto',colorTexto);
+    formData.append('imagen',imagen);
+    
+    const response  = await axios.post('http://localhost:3007/post/create',formData);
+    return   response.data;
+         
+})
 const publicacion = createSlice({
      name : 'publicacion',
-     reducers : {},
-     initialState : { publicaciones : [], status : 'idle', error : null},
+     reducers : {
+       resetStatusPublicar : (state)   => {
+           state.statusPublicar  = 'idle';
+       }
+     },
+     initialState : { publicaciones : [], status : 'idle', error : null,statusPublicar :'idle'},
      extraReducers : builder => {
         builder
         .addCase(traerPublicaciones.rejected, (state,action) => {
@@ -25,10 +42,21 @@ const publicacion = createSlice({
             state.status  = 'loading';
             
         })
+        .addCase(publicar.fulfilled, (state,action) => {
+           state.statusPublicar ='succeeded';
+           
+        })
+        .addCase(publicar.pending, (state) => {
+          state.statusPublicar  = 'loading';
+        })
+        .addCase(publicar.rejected, (state) => {
+          state.statusPublicar = 'failed';
+          state.error  = action.payload;
+        })
 
      }
 
 });
 
-
+export const {resetStatusPublicar} = publicacion.actions;
 export default publicacion.reducer;

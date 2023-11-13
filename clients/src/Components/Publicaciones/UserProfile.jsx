@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import Profile from '../Profile/Profile';
-
 import Publicaciones from './Publicaciones';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faUpload} from '@fortawesome/free-solid-svg-icons';
-import EditProfile from '../Profile/EditProfile';
+
 import { NavLink } from 'react-router-dom';
 
 const UserProfile = () => {
