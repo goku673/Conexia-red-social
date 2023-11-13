@@ -16,7 +16,7 @@ const EditProfile = () => {
 
   useEffect(() => {
     if (statusUpdate  === 'loading') {
-       // elimina un toas antes de mostrar uno nuevo 
+       // eliminamos un toas antes de mostrar uno nuevo 
       toast.loading('Realizando Cambios');
     } else if (statusUpdate === 'succeeded') {
       toast.dismiss(); 

@@ -8,6 +8,8 @@ import { googleAuth } from '../Redux/slice';
 import Modal from 'react-modal';
 import { useState } from 'react';
 import EditProfile from './EditProfile';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -45,7 +47,7 @@ const Profile = () => {
       <p className="text-center text-xs text-color3">Se unió el {fechaRegistro}</p>
 
       <button onClick={() => setModalIsOpen(true)} className="block mx-auto mt-8 px-4 py-2 text-white bg-color5 rounded">
-        Editar perfil
+        Editar perfil   <FontAwesomeIcon icon={faPencilAlt}/>
       </button>
       <Modal
         isOpen={modalIsOpen}

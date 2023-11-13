@@ -3,29 +3,38 @@ import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faComment, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { traerPublicaciones } from '../Redux/slicePublicaciones';
 
 const Publicaciones = () => {
-  const publicaciones = useSelector(state => state.publicacion.publicaciones);
 
+  const dispatch = useDispatch();
+  const publicaciones = useSelector(state => state.publicacion.publicaciones);
+  const [comentariosVisibles, setComentariosVisibles] = useState(false);
+  const [nuevoComentario, setComentarioNuevo] = useState('');
   const [like, setLike] = useState(false);
 
   const handleClickLike = () => {
     setLike(!like);
   }
 
+  useEffect(() => { 
+      dispatch(traerPublicaciones());
+  },[])
 
+
+  const handlePublicarComentario = () => {
+    console.log(nuevoComentario);
+    setComentarioNuevo('');
+    window.alert('pensa que esta comentando papito')
+  }
   return (
     <div className="space-y-4">
       {publicaciones.map((post) => {
         let fecha = new Date(post.fecha);
         let fechaLegible = fecha.toLocaleString();
-        const [comentariosVisibles, setComentariosVisibles] = useState(false);
-        const [nuevoComentario, setComentarioNuevo] = useState('');
-        const handlePublicarComentario = () => {
-          console.log(nuevoComentario);
-          setComentarioNuevo('');
-          window.alert('pensa que esta comentando papito')
-        }
+       
         return (
           <div key={post.idPublicacion} className="bg-white shadow rounded-lg p-6" style={{ backgroundColor: post.colorFondo, color: post.colorTexto }}>
             <h2 className="text-2xl font-bold mb-2">{post.review}</h2>
@@ -34,15 +43,16 @@ const Publicaciones = () => {
             <p className="text-sm text-gray-500 mb-2">Fecha: {fechaLegible}{fechaLegible}</p>
             {post.imagenURL && <img className="w-full h-64 object-cover mb-2 rounded" src={post.imagenURL} alt="Imagen de la publicación" />}
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold">Comentarios</h3>
-              {/* Muestra los comentarios si comentariosVisibles es true */}
+              
               {comentariosVisibles && (
                 <>
+                <h3 className="text-lg font-semibold">Comentarios</h3>
                   {post.Comentarios.map((comentario) => (
                     <div
                       key={comentario.idComentario}
                       className="bg-color3 p-3 rounded-lg mb-2 overflow-auto"
                     >
+                      
                       <div className="flex items-center space-x-3">
                         <img
                           className="h-10 w-10 rounded-full"
@@ -73,9 +83,6 @@ const Publicaciones = () => {
                       <FontAwesomeIcon icon={faPaperPlane} />
                     </button>
                   </div>
-
-
-
                 </>
               )}
             </div>
