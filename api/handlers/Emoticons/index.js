@@ -1,4 +1,7 @@
-const createEmotionController = require ('../../controllers/Emoticon/index.js');
+const {
+    createEmotionController,
+    deleteEmoticonController
+}= require ('../../controllers/Emoticon/index.js');
 
 const createEmoticon  = async(req,res) => {
     
@@ -17,4 +20,22 @@ const createEmoticon  = async(req,res) => {
     
 }
 
-module.exports = createEmoticon ;
+const deteteEmoticon  = async(req,res) => {
+     try {
+        const emoticonEliminado  =await deleteEmoticonController(req);
+        if(emoticonEliminado.error){
+          return res.status(400).json({error : emoticonEliminado.error});
+        }
+        res.status(200).json(emoticonEliminado);
+        
+     } catch (error) {
+        
+         res.status(400).json({error : error});
+     }
+
+}
+ 
+module.exports ={
+    createEmoticon, 
+    deteteEmoticon,
+}

@@ -63,7 +63,7 @@ const logInController = async (req) => {
       return { error: 'Contraseña incorrecta' };
     }
     console.log("si entro registrandome este es el usuario", user);
-    return user._previousDataValues;
+    return user.dataValues;
 
   } catch (error) {
     console.error('Error al iniciar sesión:', error);

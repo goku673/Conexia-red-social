@@ -14,13 +14,14 @@ import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 const Profile = () => {
   const dispatch = useDispatch();
   const usuario = useSelector((state) => state.usuario);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  //const [modalIsOpen, setModalIsOpen] = useState(false);
 
   useEffect(() => {
     if (!usuario.user) {
       dispatch(googleAuth());
     }
   }, [])
+  const [modalActivo, setModalActivo] = useState('');
 
   // Convertir la fecha de registro a un formato más legible
   // mejorar la conexion con fire base y arreglar el problema que hay  
@@ -46,18 +47,18 @@ const Profile = () => {
       <p className="px-6 mt-4 mb-8 text-center text-color3">{usuario.user.resenia || "No hay reseña disponible"}</p>
       <p className="text-center text-xs text-color3">Se unió el {fechaRegistro}</p>
 
-      <button onClick={() => setModalIsOpen(true)} className="block mx-auto mt-8 px-4 py-2 text-white bg-color5 rounded">
+      <button onClick={() => setModalActivo('modal1')} className="block mx-auto mt-8 px-4 py-2 text-white bg-color5 rounded">
         Editar perfil   <FontAwesomeIcon icon={faPencilAlt}/>
       </button>
       <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
+        isOpen={modalActivo ==='modal1'}
+        onRequestClose={() => setModalActivo('')}
         className="fixed inset-0 flex items-center justify-center"
         overlayClassName="bg-gray-900 bg-opacity-50 overflow-y-auto"
       >
         <div className="relative bg-white w-11/12 md:w-1/3 shadow-lg rounded-lg">
           <button
-            onClick={() => setModalIsOpen(false)}
+            onClick={() => setModalActivo('')}
             className="absolute top-0 right-0 mt-4 mr-4 text-gray-400 hover:text-gray-600 transition"
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

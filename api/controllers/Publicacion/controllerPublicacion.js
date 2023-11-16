@@ -100,7 +100,7 @@ const getAllPostsController = async () => {
       // Usamos el método get({ plain: true }) para obtener solo los datos reales
       const plainPosts = posts.map(post => post.get({ plain: true }));
 
-      console.log("hola mundo", plainPosts);
+   
       return plainPosts;
 
    } catch (error) {
