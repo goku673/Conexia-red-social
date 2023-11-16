@@ -20,6 +20,19 @@ export const publicar  =  createAsyncThunk('post/publicaciones', async ({review,
     return   response.data;
          
 })
+
+export const comentar = createAsyncThunk('post/comentario', async ({comentario,idPublicacion},{getState}) => {
+      const idUser  = getState().usuario.user.userID;
+      const response  = await axios.post('http://localhost:3007/comentario/createComentario',{comentario,idPublicacion,idUser});
+      return response.data;
+})
+
+export const darLikeODislike = createAsyncThunk('post/emoticon', async (idPublicacion,{getState}) => {
+       const idUser = getState().usuario.user.userID;
+       const response  = await axios.post('http://localhost:3007/emoticon/darLike',{idPublicacion,idUser})
+       return response.data;
+})
+
 const publicacion = createSlice({
      name : 'publicacion',
      reducers : {
@@ -53,6 +66,7 @@ const publicacion = createSlice({
           state.statusPublicar = 'failed';
           state.error  = action.payload;
         })
+        
 
      }
 

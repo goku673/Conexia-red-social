@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import { updateUser } from '../Redux/slice';
 import { resetStatusUpdate } from '../Redux/slice';
+import { traerPublicaciones } from '../Redux/slicePublicaciones';
 
 const EditProfile = () => {
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ const EditProfile = () => {
       setImagenPortada(null);
       // restablecemos despues mi estado  de succeeded a idle despues de una actualizacion exitosa 
       dispatch(resetStatusUpdate());
+      dispatch(traerPublicaciones());
     } else if (statusUpdate  === 'failed') {
       toast.error('Hubo un error al realizar los cambios');
     }

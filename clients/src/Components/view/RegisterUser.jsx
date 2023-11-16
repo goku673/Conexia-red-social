@@ -96,7 +96,7 @@ import { useNavigate } from 'react-router-dom';
               </button>
             </div>
             <input type="file"   onChange={handleImageChange} className="w-full p-2 mb-4 border border-color3 rounded bg-color4 text-color5" />
-            <button type="submit" className="w-full p-2 mb-4 bg-color6 text-color7 rounded">Registrarse</button>
+            <button type="submit" className="w-full p-2 mb-4 bg-color6 text-color5 h rounded">Registrarse</button>
           </form>
             <ToastContainer/>
         </div>

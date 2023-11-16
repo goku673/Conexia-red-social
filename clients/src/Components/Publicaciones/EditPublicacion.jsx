@@ -6,6 +6,7 @@ import { publicar } from '../Redux/slicePublicaciones';
 import { ToastContainer,toast } from 'react-toastify';
 import { resetStatusPublicar } from '../Redux/slicePublicaciones';
 import { NavLink } from 'react-router-dom';
+import { traerPublicaciones } from '../Redux/slicePublicaciones';
 
 const EditPublicacion = () => {
   const dispath = useDispatch();
@@ -30,6 +31,7 @@ const EditPublicacion = () => {
     } else if (statusPublicar === 'succeeded') {
        toast.dismiss();
        toast.success('Publicacion publicada correctamente');
+       dispath(traerPublicaciones());
        dispath(resetStatusPublicar());
     } else if (statusPublicar === 'failed') {
        toast.dismiss();
@@ -45,6 +47,8 @@ const EditPublicacion = () => {
     setColorFondo('');
     setColorTexto('');
     setImagen(null);
+    
+
   }
 
   return (

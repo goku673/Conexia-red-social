@@ -90,7 +90,7 @@ const Login = () => {
               <FontAwesomeIcon icon={faEye} />
             </button>
           </div>
-          <button type="submit" className="w-full p-2 mb-4 bg-color6 text-color7 rounded">Ingresar</button>
+          <button type="submit" className="w-full p-2 mb-4 bg-color6 text-color7 hover:text-color2 rounded">Ingresar</button>
           <button type="button" onClick={handleLoginGoogle} className="flex items-center justify-center w-full p-2 bg-color8 border border-color9 rounded">
             <img className="w-6 h-6 mr-2" src='https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA' alt='img' />
             Continuar con Google
