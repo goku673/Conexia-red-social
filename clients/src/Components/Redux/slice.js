@@ -49,12 +49,27 @@ export const  updateUser =  createAsyncThunk('usuario/update', async (userData, 
 })
 
 
+export const  searchUserByName =  createAsyncThunk ('get/userByName', async (nombre) => {
+        const response = await axios.get(`http://localhost:3007/user/userName?nombre=${nombre}`);
+         return response.data;
+})
+
+export const userById = createAsyncThunk ('getUser/ById',async (id) => {
+    const response = await axios.get(`http://localhost:3007/user/userId/${id}`);
+    return response.data;
+})
 const usuario = createSlice({
     name : 'usuario',
-    initialState : { user : null , status : 'idle', error : null ,userRegister : null, statusUpdate : 'idle'},
+    initialState : { user : null , status : 'idle', error : null ,userRegister : null, statusUpdate : 'idle', usersByName :[] , statusUsers : 'idle',userByID : null},
     reducers :{
          resetStatusUpdate : (state) => {
               state.statusUpdate = 'idle';
+         },
+         clearUserByName  : (state) => {
+             state.usersByName = []
+         },
+         resetStatusGetUsers : (state) => {
+            state.statusUsers = 'idle';
          }
     },
     extraReducers : builder => {
@@ -95,8 +110,25 @@ const usuario = createSlice({
               state.statusUpdate   = 'failed';
               state.error = action.error.message
           })
+          .addCase(searchUserByName.rejected, (state,action) => { 
+                 state.statusUsers  = 'failed',
+                 state.error = action.error;
+                 state.usersByName = [];
+          })
+          .addCase(searchUserByName.pending, (state) => {
+              state.statusUsers ='loading'
+          })
+          .addCase(searchUserByName.fulfilled, (state,action) => {
+               state.statusUsers = 'succeeded';
+               state.usersByName = action.payload;
+          })
+          .addCase(userById.fulfilled, (state,action) => {
+             state.userByID = action.payload;
+          })
     }
 })
 
 export const {resetStatusUpdate} = usuario.actions;
+export const {clearUserByName}  =usuario.actions;
+export const {resetStatusGetUsers} = usuario.actions;
 export default usuario.reducer;
