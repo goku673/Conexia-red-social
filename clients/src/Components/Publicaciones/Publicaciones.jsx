@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faComment, faPaperPlane, faUsers , faUser} from '@fortawesome/free-solid-svg-icons';
@@ -8,6 +8,7 @@ import { traerPublicaciones } from '../Redux/slicePublicaciones';
 import { comentar } from '../Redux/slicePublicaciones';
 import { darLikeODislike } from '../Redux/slicePublicaciones';
 import Modal from 'react-modal';
+import { userById } from '../Redux/slice';
 
 
 const Publicaciones = () => {
@@ -15,6 +16,7 @@ const Publicaciones = () => {
   const dispatch = useDispatch();
   const publicaciones = useSelector(state => state.publicacion.publicaciones);
   const { userID } = useSelector((state) => state.usuario.user);
+  const { userByID } = useSelector((state) => state.usuario);
 
   const [modalActivo, setModalActivo] = useState(null);
   const [comentariosVisibles, setComentariosVisibles] = useState({});
@@ -29,6 +31,9 @@ const Publicaciones = () => {
 
   }
 
+  useEffect(() => {
+      console.log(userByID)
+  },[userByID])
 
   // useEffect(() => {
   //     dispatch(traerPublicaciones());
@@ -174,7 +179,7 @@ const Publicaciones = () => {
                 </div>
               </td>
               <td className="py-3 px-6 text-center">
-                <button className="bg-color5 text-white px-2 py-1 rounded text-sm" onClick={() => window.alert('ella es la novia de freddy y quiero mucho asu freddy no muestro imagen porque es la mas linda del mundo ')}>
+                <button className="bg-color5 text-white px-2 py-1 rounded text-sm" onClick={() => dispatch(userById(emoticon.usuarioEmoticon.id))}>
                   <FontAwesomeIcon icon={faUser}/>
                 </button>
               </td>
