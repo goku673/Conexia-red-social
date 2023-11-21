@@ -33,6 +33,11 @@ export const darLikeODislike = createAsyncThunk('post/emoticon', async (idPublic
        return response.data;
 })
 
+export const publicacionesPorIdUser = createAsyncThunk('getPublicacion/user' , async (idUser) => {
+       const response = await axios.get(`http://localhost:3007/post/byUserId/${idUser}`);
+        return response.data;
+})
+
 const publicacion = createSlice({
      name : 'publicacion',
      reducers : {
@@ -40,7 +45,7 @@ const publicacion = createSlice({
            state.statusPublicar  = 'idle';
        }
      },
-     initialState : { publicaciones : [], status : 'idle', error : null,statusPublicar :'idle'},
+     initialState : { publicaciones : [], status : 'idle', error : null,statusPublicar :'idle',publicacionIdUser : []},
      extraReducers : builder => {
         builder
         .addCase(traerPublicaciones.rejected, (state,action) => {
@@ -66,7 +71,9 @@ const publicacion = createSlice({
           state.statusPublicar = 'failed';
           state.error  = action.payload;
         })
-        
+        .addCase(publicacionesPorIdUser.fulfilled, (state,action) => {
+              state.publicacionIdUser = action.payload;
+        })
 
      }
 
