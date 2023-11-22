@@ -61,7 +61,7 @@ const Publicaciones = () => {
           <div key={post.idPublicacion} className="bg-white shadow rounded-lg p-6" style={{ backgroundColor: post.colorFondo, color: post.colorTexto }}>
             <h2 className="text-2xl font-bold mb-2">{post.review}</h2>
             <p className="text-sm text-gray-500 mb-2">Publicado por: {post.usuarioQuienPublico.nombre}</p> {/* Necesitarás reemplazar esto con el nombre del usuario cuando establezcas esa relación en tu backend */}
-            <p className="text-sm text-gray-500 mb-2">Fecha: {fechaLegible}{fechaLegible}</p>
+            <p className="text-sm text-gray-500 mb-2">Fecha: {fechaLegible}</p>
             {post.imagenURL && <img className="w-full h-64 object-cover mb-2 rounded" src={post.imagenURL} alt="Imagen de la publicación" />}
             <div className="space-y-2">
               {comentariosVisibles[post.idPublicacion] && (
@@ -74,7 +74,7 @@ const Publicaciones = () => {
                     >
 
                       <div className="flex items-center space-x-3">
-                        <img className="h-10 w-10 rounded-full" src={comentario.usuarioComentario.imagenURL}/>
+                        <img className="h-10 w-10 rounded-full" src={comentario.usuarioComentario.imagenURL} />
                         <p className="font-bold text-color4">{comentario.usuarioComentario.nombre}</p>
                       </div>
                       <p>{comentario.comentario} </p>
@@ -91,7 +91,6 @@ const Publicaciones = () => {
                       })}
                       placeholder="Escribe un comentario..."
                     />
-
                     <button
                       className='bg-color5 hover:bg-color6 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
                       onClick={() => handlePublicarComentario(post.idPublicacion)}

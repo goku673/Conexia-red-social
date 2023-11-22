@@ -50,7 +50,7 @@ const UserProfile = () => {
           <input placeholder='buscar usuarios...' value={nombre} onChange={(e) => setNombre(e.target.value)} className='w-1/2 py-2 px-4 rounded border-4 border-gray-300 focus:outline-none focus:border-color2 focus:w-3/4 transition-all' />
         </div>
         {nombre && statusUsers === 'failed' && <p className='bg-color6 text-color2 text-center'>Usuario no encontrado!!!</p>}
-        {showUser && usersByName.length > 0 && <SearchUser user={userByID} />}
+        {showUser && usersByName.length > 0 && <SearchUser user={userByID}  />}
         {usersByName?.length > 0 && (
           <table className="w-full table-auto mt-8">
             <thead>
