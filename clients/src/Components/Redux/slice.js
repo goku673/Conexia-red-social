@@ -58,9 +58,11 @@ export const userById = createAsyncThunk ('getUser/ById',async (id) => {
     const response = await axios.get(`http://localhost:3007/user/userId/${id}`);
     return response.data;
 })
+
+
 const usuario = createSlice({
     name : 'usuario',
-    initialState : { user : null , status : 'idle', error : null ,userRegister : null, statusUpdate : 'idle', usersByName :[] , statusUsers : 'idle',userByID : null},
+    initialState : { user : null , status : 'idle', error : null ,userRegister : null, statusUpdate : 'idle', usersByName :[] , statusUsers : 'idle',userByID : null,usuarioConPublicaciones : false},
     reducers :{
          resetStatusUpdate : (state) => {
               state.statusUpdate = 'idle';
@@ -70,6 +72,9 @@ const usuario = createSlice({
          },
          resetStatusGetUsers : (state) => {
             state.statusUsers = 'idle';
+         },
+         changeUsuarioConPublicaciones : (state,action) => {
+             state.usuarioConPublicaciones = action.payload;
          }
     },
     extraReducers : builder => {
@@ -131,4 +136,5 @@ const usuario = createSlice({
 export const {resetStatusUpdate} = usuario.actions;
 export const {clearUserByName}  =usuario.actions;
 export const {resetStatusGetUsers} = usuario.actions;
-export default usuario.reducer;
+export const {changeUsuarioConPublicaciones} = usuario.actions
+export default usuario.reducer; 

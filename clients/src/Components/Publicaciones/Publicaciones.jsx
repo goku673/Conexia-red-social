@@ -40,7 +40,7 @@ const Publicaciones = () => {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 bg-gray-900 text-white p-6 rounded-lg">
       {publicaciones.map((post) => {
         let fecha = new Date(post.fecha);
         let fechaLegible = fecha.toLocaleString();
@@ -120,7 +120,6 @@ const Publicaciones = () => {
                 <FontAwesomeIcon icon={faComment} /> {/* Icono de comentarios */}
                 <span>{post.Comentarios.length}</span> {/* Cantidad de comentarios. Asegúrate de reemplazar esto con la cantidad correcta cuando establezcas esa relación en tu backend */}
               </button>
-
             </div>
           </div>
         )
@@ -135,7 +134,6 @@ const Publicaciones = () => {
           <button onClick={() => setModalActivo('')} className="absolute top-0 right-0 mt-4 mr-4 text-3xl text-gray-400 hover:text-gray-600 transition">
             x
           </button>
-
           <div className="py-2 px-4">
             <h1 className="text-xl font-bold mb-2 text-color2">Usuarios que le dieron like a la publicación</h1>
             <table className="w-full table-auto">
