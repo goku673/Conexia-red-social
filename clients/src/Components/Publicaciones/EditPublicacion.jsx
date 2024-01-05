@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUpload } from '@fortawesome/free-solid-svg-icons';
+import { faUpload, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { publicar } from '../Redux/slicePublicaciones';
-import { ToastContainer,toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import { resetStatusPublicar } from '../Redux/slicePublicaciones';
 import { NavLink } from 'react-router-dom';
 import { traerPublicaciones } from '../Redux/slicePublicaciones';
@@ -17,7 +17,7 @@ const EditPublicacion = () => {
   const [imagenPrevia, setImagenPrevia] = useState(null);
   const [imagen, setImagen] = useState(null);
   const usuario = useSelector((state) => state.usuario.user);
-
+  const [showMessage, setShowMessage] = useState(false);
   console.log(statusPublicar);
   const handleImageUpload = (e) => {
     setImagenPrevia(URL.createObjectURL(e.target.files[0]));
@@ -27,16 +27,16 @@ const EditPublicacion = () => {
 
   useEffect(() => {
     if (statusPublicar === 'loading') {
-       toast.loading('publicando');
+      toast.loading('publicando');
     } else if (statusPublicar === 'succeeded') {
-       toast.dismiss();
-       toast.success('Publicacion publicada correctamente');
-       dispath(traerPublicaciones());
-       dispath(resetStatusPublicar());
+      toast.dismiss();
+      toast.success('Publicacion publicada correctamente');
+      dispath(traerPublicaciones());
+      dispath(resetStatusPublicar());
     } else if (statusPublicar === 'failed') {
-       toast.dismiss();
-       toast.error('Hubo un error al publicar');
-       dispath(resetStatusPublicar());
+      toast.dismiss();
+      toast.error('Hubo un error al publicar');
+      dispath(resetStatusPublicar());
     }
   }, [statusPublicar]);
 
@@ -47,15 +47,17 @@ const EditPublicacion = () => {
     setColorFondo('');
     setColorTexto('');
     setImagen(null);
-    
+
 
   }
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-gray-100 p-4">
+    <div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-gray-500 p-4">
       <form onSubmit={handleSubmit} className="flex flex-col bg-color4 p-8 rounded shadow-lg space-y-4 w-full md:w-1/2 md:mr-4 mb-4 md:mb-0">
+        <NavLink className="text-color2 font-bold hover:text-red-500 relative group" to='/profile'>
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </NavLink>
         <h1 className="text-2xl mb-4 text-center text-color2">Editar Publicación</h1>
-         <NavLink to='/profile'>volver</NavLink>
         <label className="flex flex-col space-y-2">
           <span className='text-color2'>Review:</span>
           <textarea value={review} onChange={(e) => setReview(e.target.value)} className="border p-2 rounded" style={{ color: colorTexto, backgroundColor: colorFondo }} />
@@ -78,7 +80,7 @@ const EditPublicacion = () => {
           <input className='text-color2' type="file" onChange={handleImageUpload} />
         </label>
 
-        <button type="submit" className="mt-4   py-2 px-4 bg-color2  text-white rounded">Publicar  <FontAwesomeIcon icon={faUpload} />
+        <button type="submit" className="mt-4   py-2 px-4 bg-color2  text-white rounded">Publicar<FontAwesomeIcon icon={faUpload} />
         </button>
       </form>
 
@@ -91,7 +93,7 @@ const EditPublicacion = () => {
           {imagenPrevia && <img className="w-full h-64 object-cover mb-2 rounded" src={imagenPrevia} alt="Preview" />}
         </div>
       </div>
-       <ToastContainer/>
+      <ToastContainer />
     </div>
   )
 }

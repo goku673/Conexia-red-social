@@ -36,7 +36,7 @@ const EditProfile = () => {
 
   const handleResenia = (e) => {
     const wordCount = e.target.value.length;
-    ///  para la cantidad de palabras const filteredWordCount =   wordCount.filter(  function(n){ return n != '' }).length; 
+  
     if (wordCount <= 300) {
       setResenia(e.target.value);
     } else {
