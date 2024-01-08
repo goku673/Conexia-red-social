@@ -1,15 +1,14 @@
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect ,useState} from 'react';
+import { useSelector ,useDispatch} from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faComment, faPaperPlane, faUsers, faUser } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { traerPublicaciones } from '../Redux/slicePublicaciones';
+import { traerPublicaciones,darLikeODislike} from '../Redux/slicePublicaciones';
 import { comentar } from '../Redux/slicePublicaciones';
-import { darLikeODislike } from '../Redux/slicePublicaciones';
-import Modal from 'react-modal';
-import { userById } from '../Redux/slice';
-
+//import Modal from 'react-modal';
+//import { userById } from '../Redux/slice';
+import PublicacionModal from './PublicacionModal';
+import { changeUsuarioConPublicacionesModal } from '../Redux/slice';
+import PublicacionesByUserEmoticon from './PublicacionesByUserEmoticon';
 
 const Publicaciones = () => {
 
@@ -23,13 +22,15 @@ const Publicaciones = () => {
   const [nuevosComentarios, setNuevosComentarios] = useState({});
   const [like, setLike] = useState({});
   const [publicacionMostrandoLikes, setPublicacionMostrandoLikes] = useState(null);
+  const {usuarioConPublicacionesModal} = useSelector(state => state.usuario);
 
   const handleClickLike = async (idPublicacion) => {
     await dispatch(darLikeODislike(idPublicacion));
     setLike(prevLike => ({ ...prevLike, [idPublicacion]: !prevLike[idPublicacion] }));
     dispatch(traerPublicaciones());
-
   }
+
+  console.log("bbb",userByID);
 
   const abrirModalLikes = (idPublicacion) => {
     setPublicacionMostrandoLikes(idPublicacion);
@@ -41,7 +42,9 @@ const Publicaciones = () => {
 
   return (
     <div className="space-y-4 bg-gray-900 text-white p-6 rounded-lg">
-      {publicaciones.map((post) => {
+     {usuarioConPublicacionesModal && <PublicacionesByUserEmoticon/>}
+
+      { !usuarioConPublicacionesModal && publicaciones.map((post) => {
         let fecha = new Date(post.fecha);
         let fechaLegible = fecha.toLocaleString();
         const handlePublicarComentario = async (idPublicacion) => {
@@ -72,7 +75,6 @@ const Publicaciones = () => {
                       key={comentario.idComentario}
                       className="bg-color3 p-3 rounded-lg mb-2 overflow-auto"
                     >
-
                       <div className="flex items-center space-x-3">
                         <img className="h-10 w-10 rounded-full" src={comentario.usuarioComentario.imagenURL} />
                         <p className="font-bold text-color4">{comentario.usuarioComentario.nombre}</p>
@@ -109,7 +111,6 @@ const Publicaciones = () => {
               <button>
                 <FontAwesomeIcon icon={faUsers} onClick={() => abrirModalLikes(post.idPublicacion)} />
               </button>
-
               <button
                 className="flex items-center space-x-1  hover:text-color2"
                 onClick={() => setComentariosVisibles({
@@ -124,68 +125,13 @@ const Publicaciones = () => {
           </div>
         )
       })}
-      <Modal
-        isOpen={modalActivo === 'modal2'}
-        onRequestClose={() => setModalActivo('')}
-        className="fixed inset-0 flex items-center justify-center"
-        overlayClassName="bg-gray-900 bg-opacity-50 overflow-y-auto"
-      >
-        <div className="relative bg-color10 w-11/12 md:w-2/3 shadow-lg rounded-lg overflow-y-auto max-h-screen flex items-center justify-center">
-          <button onClick={() => setModalActivo('')} className="absolute top-0 right-0 mt-4 mr-4 text-3xl text-gray-400 hover:text-gray-600 transition">
-            x
-          </button>
-          <div className="py-2 px-4">
-            <h1 className="text-xl font-bold mb-2 text-color2">Usuarios que le dieron like a la publicación</h1>
-            <table className="w-full table-auto">
-              <thead>
-                <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                  <th className="py-3 px-6 text-left">Imagen</th>
-                  <th className="py-3 px-6 text-left">Nombre</th>
-                  <th className="py-3 px-6 text-center">Ver perfil</th>
-                </tr>
-              </thead>
-              <tbody className="text-gray-600 text-sm font-light">
-                {publicaciones.find(publicacion => publicacion.idPublicacion === publicacionMostrandoLikes)?.Emoticons.map((emoticon, index) => (
-                  <tr className="border-b border-gray-200 hover:bg-gray-100" key={index}>
-                    <td className="py-3 px-6 text-left whitespace-nowrap">
-                      <div className="flex items-center">
-                        <img className="h-8 w-8 rounded-full" src={emoticon.usuarioEmoticon.imagenURL} alt="Imagen del usuario" />
-                      </div>
-                    </td>
-                    <td className="py-3 px-6 text-left">
-                      <div className="flex items-center text-color2">
-                        <span>{emoticon.usuarioEmoticon.nombre}</span>
-                      </div>
-                    </td>
-                    <td className="py-3 px-6 text-center">
-                      <button className="bg-color5 text-white px-2 py-1 rounded text-sm" onClick={() => { dispatch(userById(emoticon.usuarioEmoticon.id)); setShowUserInfo(true); }}>
-                        <FontAwesomeIcon icon={faUser} />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          {userByID && showUserInfo && (
-            <div className="bg-color1 p-4 rounded-lg shadow-lg ml-4 w-1/2">
-              <button onClick={() => setShowUserInfo(false)} className="bg-color2 text-white px-2 py-1 rounded absolute top-0 right-0 mt-4 mr-24">
-                x
-              </button>
-              <div className="flex items-center space-x-4 mb-4">
-                <img className="w-24 h-24 object-cover rounded-full" src={userByID.imagenURL} alt={userByID.nombre} />
-                <div>
-                  <h1 className="text-color2 text-2xl font-bold">{userByID.nombre}</h1>
-                  <p className="text-color4">-------------------</p>
-                  <p className="text-color5">Fecha de registro: {new Date(userByID.fechaRegistro).toLocaleDateString()}</p>
-                </div>
-              </div>
-              <p className="text-color3">{userByID.resenia ? userByID.resenia : "No tiene reseña"}</p>
-              <img className="w-full h-64 object-cover mt-4 rounded" src={userByID.imagenURLPortada} alt="Portada" />
-            </div>
-          )}
-        </div>
-      </Modal>
+        <PublicacionModal
+          modalActivo={modalActivo}
+          setModalActivo={setModalActivo}
+          publicaciones = {publicaciones}
+          publicacionMostrandoLikes={publicacionMostrandoLikes}
+          dispatch={dispatch}
+          />
     </div>
   )
 }

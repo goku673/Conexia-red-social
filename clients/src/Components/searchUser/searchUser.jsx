@@ -15,7 +15,6 @@ const SearchUser = ({ user }) => {
   const [like,setLike] = useState({});
   const [publicacionMostrandoLikes, setPublicacionMostrandoLikes] = useState(null);
   //const [usuarioConPublicaciones , setUsuarioConPublicaciones] = useState(false);
-
   const handleClickLike = async (idPublicacion) => {
     await dispatch(darLikeODislike(idPublicacion));
     setLike(prevLike => ({ ...prevLike, [idPublicacion]: !prevLike[idPublicacion] }));
@@ -23,7 +22,6 @@ const SearchUser = ({ user }) => {
 
   }
  
-
   return (
     <div className='bg-color1 p-4 rounded-lg mt-4 ml-4 md:ml-0 mr-4 md:mr-0 shadow-lg'>
       <div className="relative w-full h-44">
@@ -33,7 +31,6 @@ const SearchUser = ({ user }) => {
       <h2 className="mt-16 mb-4 text-2xl font-bold text-center text-color5">{user?.nombre}</h2>
       <p className="px-6 mt-4 mb-8 text-center text-color3">{user?.resenia || "No hay reseña disponible"}</p>
       <p className="text-center text-xs text-color3">Fecha de registro: {new Date(user?.fechaRegistro).toLocaleDateString()}</p>
-
       <div>
         <h1 className='text-bold text-color2'>Publicaciones de {user?.nombre}</h1>
         {publicacionIdUser.length === 0 ? (
@@ -54,6 +51,7 @@ const SearchUser = ({ user }) => {
             const yaLeDiLike = (emoticons) => {
               return emoticons.some(emoticon => emoticon.usuarioEmoticon.id === user.id);
             }
+
             return (
               <div key={publicacion.idPublicacion} className='bg-white shadow rounded-lg p-6 mb-2' style={{ backgroundColor: publicacion.colorFondo }}>
                 <h2 className='text-2x1 font-bold mb-2'>{publicacion.review}</h2>
@@ -107,7 +105,6 @@ const SearchUser = ({ user }) => {
           })
         )}
       </div>
-
     </div>
   )
 }
