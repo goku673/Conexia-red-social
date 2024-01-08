@@ -43,6 +43,9 @@ const publicacion = createSlice({
      reducers : {
        resetStatusPublicar : (state)   => {
            state.statusPublicar  = 'idle';
+       },
+       resetPublicacionesByIdUser : (state) => {
+            state.publicacionIdUser = [];
        }
      },
      initialState : { publicaciones : [], status : 'idle', error : null,statusPublicar :'idle',publicacionIdUser : []},
@@ -80,4 +83,5 @@ const publicacion = createSlice({
 });
 
 export const {resetStatusPublicar} = publicacion.actions;
+export const {resetPublicacionesByIdUser} =publicacion.actions;
 export default publicacion.reducer;

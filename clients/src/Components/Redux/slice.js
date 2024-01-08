@@ -2,10 +2,7 @@ import {createSlice,createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-
 //http://localhost:3007/user/login esta ruta es para que el usuario ingrese con su nombre y  contraseña y verifica si esta o no en la base de datos
-
-
 export const userLogin = createAsyncThunk('usuario/login', async ({email,password}) => {
        const response = await  axios.post('http://localhost:3007/user/login',{email,password});
        console.log(response.data)
@@ -20,7 +17,6 @@ export const googleAuth  = createAsyncThunk('auth/google',  () => {
        }
        throw new Error('no user cookie found');
 })
-
 //createAsyncThunk solo espera un argumento
 export const registerUser = createAsyncThunk('register/user', async ({nombre,email,password,imagen}) => {
           const formData  = new FormData();
@@ -48,7 +44,6 @@ export const  updateUser =  createAsyncThunk('usuario/update', async (userData, 
          return response.data;
 })
 
-
 export const  searchUserByName =  createAsyncThunk ('get/userByName', async (nombre) => {
         const response = await axios.get(`http://localhost:3007/user/userName?nombre=${nombre}`);
          return response.data;
@@ -59,10 +54,9 @@ export const userById = createAsyncThunk ('getUser/ById',async (id) => {
     return response.data;
 })
 
-
 const usuario = createSlice({
     name : 'usuario',
-    initialState : { user : null , status : 'idle', error : null ,userRegister : null, statusUpdate : 'idle', usersByName :[] , statusUsers : 'idle',userByID : null,usuarioConPublicaciones : false},
+    initialState : { user : null , status : 'idle', error : null ,userRegister : null, statusUpdate : 'idle', usersByName :[] , statusUsers : 'idle',userByID : null,usuarioConPublicaciones : false,usuarioConPublicacionesModal : false},
     reducers :{
          resetStatusUpdate : (state) => {
               state.statusUpdate = 'idle';
@@ -75,6 +69,9 @@ const usuario = createSlice({
          },
          changeUsuarioConPublicaciones : (state,action) => {
              state.usuarioConPublicaciones = action.payload;
+         },
+         changeUsuarioConPublicacionesModal : (state,action) => {
+             state.usuarioConPublicacionesModal = action.payload;
          }
     },
     extraReducers : builder => {
@@ -136,5 +133,7 @@ const usuario = createSlice({
 export const {resetStatusUpdate} = usuario.actions;
 export const {clearUserByName}  =usuario.actions;
 export const {resetStatusGetUsers} = usuario.actions;
-export const {changeUsuarioConPublicaciones} = usuario.actions
+export const {changeUsuarioConPublicaciones} = usuario.actions;
+export const {changeUsuarioConPublicacionesModal}  = usuario.actions;
+
 export default usuario.reducer; 

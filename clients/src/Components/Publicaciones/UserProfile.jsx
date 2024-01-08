@@ -10,6 +10,7 @@ import { userById } from '../Redux/slice';
 import SearchUser from '../searchUser/searchUser';
 import { publicacionesPorIdUser } from '../Redux/slicePublicaciones';
 import { changeUsuarioConPublicaciones } from '../Redux/slice';
+import { resetPublicacionesByIdUser } from '../Redux/slicePublicaciones';
 
 const UserProfile = () => {
   const dispatch = useDispatch();
@@ -27,11 +28,11 @@ const UserProfile = () => {
       dispatch(clearUserByName());
       dispatch(changeUsuarioConPublicaciones(false));
       dispatch(resetStatusGetUsers());
+      dispatch(resetPublicacionesByIdUser());
       setShowUser(false);
     }
   }, [nombre, dispatch]);
    
-    console.log(usuarioConPublicaciones);
   return (
     <div className="min-h-screen bg-color1 flex flex-col md:flex-row">
       {/* Profile Section */}
@@ -91,7 +92,7 @@ const UserProfile = () => {
             </tbody>
           </table>
         )}
-          {!usuarioConPublicaciones && <div className=' mt-4'><Publicaciones /> </div>}
+          {!usuarioConPublicaciones && <div className=' mt-4'><Publicaciones/> </div>}
       </div>
     </div>
   );
