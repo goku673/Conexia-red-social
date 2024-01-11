@@ -48,7 +48,7 @@ const PublicacionModal = ({ modalActivo, setModalActivo, publicaciones, publicac
                                setModalActivo(null) ;
                                dispatch(publicacionesPorIdUser(emoticon.usuarioEmoticon.id));
                                dispatch(changeUsuarioConPublicacionesModal(true));
-                               console.log(emoticon.usuarioEmoticon);
+                               //console.log(emoticon.usuarioEmoticon);
                                }
                               }
                             >

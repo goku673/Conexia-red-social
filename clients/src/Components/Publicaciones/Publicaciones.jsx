@@ -2,8 +2,8 @@ import React, { useEffect ,useState} from 'react';
 import { useSelector ,useDispatch} from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faComment, faPaperPlane, faUsers, faUser } from '@fortawesome/free-solid-svg-icons';
-import { traerPublicaciones,darLikeODislike} from '../Redux/slicePublicaciones';
-import { comentar } from '../Redux/slicePublicaciones';
+import { traerPublicaciones,darLikeODislike, comentar} from '../Redux/slicePublicaciones';
+//import { comentar } from '../Redux/slicePublicaciones';
 //import Modal from 'react-modal';
 //import { userById } from '../Redux/slice';
 import PublicacionModal from './PublicacionModal';
@@ -18,19 +18,22 @@ const Publicaciones = () => {
   const { userByID } = useSelector((state) => state.usuario);
   const [showUserInfo, setShowUserInfo] = useState(false);
   const [modalActivo, setModalActivo] = useState(null);
-  const [comentariosVisibles, setComentariosVisibles] = useState({});
-  const [nuevosComentarios, setNuevosComentarios] = useState({});
+  const [comentariosVisibles, setComentariosVisibles] = useState({}); // comentario
+  const [nuevosComentarios, setNuevosComentarios] = useState({}); //comentario
   const [like, setLike] = useState({});
   const [publicacionMostrandoLikes, setPublicacionMostrandoLikes] = useState(null);
   const {usuarioConPublicacionesModal} = useSelector(state => state.usuario);
 
+  // cuando quiero dar Like esta relacionado con el id de la
   const handleClickLike = async (idPublicacion) => {
     await dispatch(darLikeODislike(idPublicacion));
     setLike(prevLike => ({ ...prevLike, [idPublicacion]: !prevLike[idPublicacion] }));
     dispatch(traerPublicaciones());
   }
-
-  console.log("bbb",userByID);
+  console.log("ssss",like);
+  console.log("nuevosComentarios",nuevosComentarios);
+  console.log("comentariosVisibles",comentariosVisibles);
+  //console.log("bbb",userByID);
 
   const abrirModalLikes = (idPublicacion) => {
     setPublicacionMostrandoLikes(idPublicacion);
@@ -41,7 +44,7 @@ const Publicaciones = () => {
   }
 
   return (
-    <div className="space-y-4 bg-gray-900 text-white p-6 rounded-lg">
+    <div className="space-y-4 bg-color9 text-white p-6 rounded-lg">
      {usuarioConPublicacionesModal && <PublicacionesByUserEmoticon/>}
 
       { !usuarioConPublicacionesModal && publicaciones.map((post) => {
@@ -66,7 +69,7 @@ const Publicaciones = () => {
             <p className="text-sm text-gray-500 mb-2">Publicado por: {post.usuarioQuienPublico.nombre}</p> {/* Necesitarás reemplazar esto con el nombre del usuario cuando establezcas esa relación en tu backend */}
             <p className="text-sm text-gray-500 mb-2">Fecha: {fechaLegible}</p>
             {post.imagenURL && <img className="w-full h-64 object-cover mb-2 rounded" src={post.imagenURL} alt="Imagen de la publicación" />}
-            <div className="space-y-2">
+              <div className="space-y-2">
               {comentariosVisibles[post.idPublicacion] && (
                 <>
                   <h3 className="text-lg font-semibold">Comentarios</h3>
