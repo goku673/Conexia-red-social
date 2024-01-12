@@ -3,8 +3,8 @@ import { changeUsuarioConPublicacionesModal } from '../Redux/slice';
 import { comentar, darLikeODislike, publicacionesPorIdUser, traerPublicaciones } from '../Redux/slicePublicaciones';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane, faThumbsUp, faUsers, faComment } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import { faPaperPlane, faThumbsUp, faUsers, faComment, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { useState, useCallback } from 'react';
 // este componte es de es para mostrar la informacion que de las  personas que dieron like a la  publicacion y de ahi para mostrar la informacion
 
 const PublicacionesByUserEmoticon = () => {
@@ -21,32 +21,50 @@ const PublicacionesByUserEmoticon = () => {
         dispatch(changeUsuarioConPublicacionesModal(false));
     }
 
-    const handleClickLike = async(idPublicacion) => {
-        // la funcion que hare mas despues 
-         await dispatch(darLikeODislike(idPublicacion));
-         setLike(prevLike => ({ ...prevLike, [idPublicacion] :!prevLike[idPublicacion]}));
-         dispatch(publicacionesPorIdUser(userByID.id)); 
-    }   
-
-    /*
-      const handleClickLike = async (idPublicacion) => {
-    await dispatch(darLikeODislike(idPublicacion));
-    setLike(prevLike => ({ ...prevLike, [idPublicacion]: !prevLike[idPublicacion] }));
-    dispatch(publicacionesPorIdUser(user.id));
-
-  }
-    */
-  
-    const handleClickComentario = () => {
-        // la funcion para que se pueda comentario 
+    const handleClickLike = async (idPublicacion) => {
+        await dispatch(darLikeODislike(idPublicacion));
+        setLike(prevLike => ({ ...prevLike, [idPublicacion]: !prevLike[idPublicacion] }));
+        dispatch(publicacionesPorIdUser(userByID.id));
     }
 
-    
+    const handlePublicarComentario = useCallback(async (idPublicacion) => {
+        const comentario = nuevosComentarios[idPublicacion];
+        if (comentario && comentario.trim()) {
+            await dispatch(comentar({ comentario, idPublicacion }))
+                .unwrap() // Esto asume que usar createAsyncThunk devuelve una promesa que puede ser "unwrapped"
+                .then(() => {
+                    setNuevosComentarios(prevComentarios => ({ ...prevComentarios, [idPublicacion]: '' }));
+                    dispatch(publicacionesPorIdUser(userByID.id));
+                })
+                .catch((error) => {
+                    console.error('Error al publicar comentario:', error);
+                });
+        }
+    }, [dispatch, nuevosComentarios, userByID.id]);
+
+    const toggleComentariosVisibles = useCallback((idPublicacion) => {
+        setComentariosVisibles(prevVisibles => ({ ...prevVisibles, [idPublicacion]: !prevVisibles[idPublicacion] }));
+    }, []);
+
+    const yaLeDiLike = useCallback((emoticons, userId) => {
+        return emoticons.some(emoticon => emoticon.usuarioEmoticon.id === userId);
+    }, []);
+
+    const handleKeyPress = (e, idPublicacion) => {
+        if (e.key === 'Enter') {
+            handlePublicarComentario(idPublicacion);
+        }
+    }
+
     return (
 
         <div className='bg-color1 p-4 rounded-lg mt-4 ml-4 md:ml-0 mr-4 md:mr-0 shadow-lg'>
+            <div className='flex justify-between items-center'>
+                <button onClick={handelClickRegresar} className='text-color5 hover:text-color2 font-bold py-2 px-4 rounded'>
+                    <FontAwesomeIcon icon={faArrowLeft} />
+                </button>
+            </div>
             <div className="relative w-full h-44">
-                {/* <button onClick={ handelClickRegresar} >regresar</button> */}
                 <img src={userByID?.imagenURLPortada} alt='portada no disponible' className='w-full h-48 rounded-t-lg object-cover' />
                 <img src={userByID?.imagenURL} alt='perfil no disponible' className='relative -top-20 w-32 h-32 mx-auto rounded-full border-4 border-color1' />
             </div>
@@ -59,22 +77,9 @@ const PublicacionesByUserEmoticon = () => {
                     <p>No hay publicaciones de este usuario</p>
                 ) : (
                     publicacionIdUser.map(publicacion => {
-                        console.log("......",publicacion.colorFondo);
                         let fecha = new Date(publicacion.fecha);
                         let fechaLegible = fecha.toLocaleString();
-                        const handlePublicarComentario = async (idPublicacion) => {
-                            await dispatch(comentar({ comentario: nuevosComentarios[idPublicacion], idPublicacion: idPublicacion }))
-                            setNuevosComentarios({
-                                ...nuevosComentarios,
-                                [idPublicacion]: ''
-                            })
-                            dispatch(traerPublicaciones());
-                        }
 
-                        const yaLeDiLike = (emoticons) => {
-                            return emoticons.some(emoticon => emoticon.usuarioEmoticon.id === userByID.id);
-                        }
-  
                         return (
                             <div key={publicacion.idPublicacion} className='bg-white shadow rounded-lg p-6 mb-2' style={{ backgroundColor: publicacion.colorFondo }}>
                                 <h2 className='text-2x1 font-bold mb-2'>{publicacion.review}</h2>
@@ -86,15 +91,17 @@ const PublicacionesByUserEmoticon = () => {
                                         <>
                                             <h3 className='text-lg font-semibold'>Comentarios</h3>
                                             <input
-                                                className='shadow appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                                                className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                                                 type='text'
                                                 value={nuevosComentarios[publicacion.idPublicacion] || ''}
                                                 onChange={(e) => setNuevosComentarios({
                                                     ...nuevosComentarios,
                                                     [publicacion.idPublicacion]: e.target.value
                                                 })}
-                                                placeholder='Escribe un comentario'
+                                                onKeyPress={(e) => handleKeyPress(e, publicacion.idPublicacion)}
+                                                placeholder='Escribe un comentario...'
                                             />
+
                                             {publicacion.Comentarios.map((comentario) => (
                                                 <div key={comentario.idComentario} className='bg-color3 p-3 rounded-lg mb-2 overflow-auto'>
                                                     <div className='flex items-center space-x-3'>
@@ -117,7 +124,9 @@ const PublicacionesByUserEmoticon = () => {
                                         <button>
                                             <FontAwesomeIcon icon={faUsers} />
                                         </button>
-                                        <button className=''>
+                                        <button className='flex items-center space-x-1 hover: text-color2'
+                                            onClick={() => toggleComentariosVisibles(publicacion.idPublicacion)}
+                                        >
                                             <FontAwesomeIcon icon={faComment} />
                                             <span>{publicacion.Comentarios.length}</span>
                                         </button>
@@ -131,8 +140,5 @@ const PublicacionesByUserEmoticon = () => {
         </div>
     )
 }
-
-
-
 
 export default PublicacionesByUserEmoticon;
