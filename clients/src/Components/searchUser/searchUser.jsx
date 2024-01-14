@@ -67,7 +67,7 @@ const SearchUser = ({ user }) => {
             let fechaLegible = fecha.toLocaleString();
 
             return (
-              <div key={publicacion.idPublicacion} className='bg-white shadow rounded-lg p-6 mb-2' style={{ backgroundColor: publicacion.colorFondo }}>
+              <div key={publicacion.idPublicacion} className='bg-white shadow rounded-lg p-6 mb-2' style={{ backgroundColor: publicacion.colorFondo, color: publicacion.colorTexto }}>
                 <h2 className='text-2x1 font-bold mb-2'>{publicacion.review}</h2>
                 <p className='text-sm text-gray-500 mb-2'>Publicado por : {publicacion.usuarioQuienPublico.nombre}</p>
                 <p>Fecha : {fechaLegible}</p>
@@ -75,7 +75,7 @@ const SearchUser = ({ user }) => {
                 <div className='space-y-2'>
                   {comentariosVisibles[publicacion.idPublicacion] && (
                     <>
-                      <h3 className='text-lg font-semibold'>Comentarios</h3>
+                      <button className='text-lg font-semibold' onClick={() => toggleComentariosVisibles(publicacion.idPublicacion)}>Comentarios </button>
                       {publicacion.Comentarios.map((comentario) => (
                         <div key={comentario.idComentario} className='bg-color3 p-3 rounded-lg mb-2 overflow-auto'>
                           <div className='flex items-center space-x-3'>
@@ -114,12 +114,9 @@ const SearchUser = ({ user }) => {
                     </>
                   )}
                   <div className='flex items-center space-x-2'>
-                    <button className={`flex items-center space-x-1 ${yaLeDiLike(publicacion.Emoticons, user.id) ? 'text-color2' : ''}`} onClick={() => handleClickLike(publicacion.idPublicacion)}>
+                    <button className={`flex items-center space-x-1 ${yaLeDiLike(publicacion.Emoticons, user.id) ? 'text-color2' : 'text-color4'}`} onClick={() => handleClickLike(publicacion.idPublicacion)}>
                       <FontAwesomeIcon icon={faThumbsUp} />
                       <span>{publicacion.Emoticons.length}</span>
-                    </button>
-                    <button>
-                      <FontAwesomeIcon icon={faUsers} />
                     </button>
                     <button className='flex items-center space-x-1 hover: text-color2'
                       onClick={() => toggleComentariosVisibles(publicacion.idPublicacion)}

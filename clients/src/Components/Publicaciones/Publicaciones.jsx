@@ -3,9 +3,6 @@ import { useSelector ,useDispatch} from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faComment, faPaperPlane, faUsers, faUser } from '@fortawesome/free-solid-svg-icons';
 import { traerPublicaciones,darLikeODislike, comentar} from '../Redux/slicePublicaciones';
-//import { comentar } from '../Redux/slicePublicaciones';
-//import Modal from 'react-modal';
-//import { userById } from '../Redux/slice';
 import PublicacionModal from './PublicacionModal';
 import { changeUsuarioConPublicacionesModal } from '../Redux/slice';
 import PublicacionesByUserEmoticon from './PublicacionesByUserEmoticon';
@@ -19,7 +16,7 @@ const Publicaciones = () => {
   const [showUserInfo, setShowUserInfo] = useState(false);
   const [modalActivo, setModalActivo] = useState(null);
   const [comentariosVisibles, setComentariosVisibles] = useState({}); // comentario
-  const [nuevosComentarios, setNuevosComentarios] = useState({}); //comentario
+  const [nuevosComentarios, setNuevosComentarios] = useState({}); //comentarioo
   const [like, setLike] = useState({});
   const [publicacionMostrandoLikes, setPublicacionMostrandoLikes] = useState(null);
   const {usuarioConPublicacionesModal} = useSelector(state => state.usuario);
@@ -30,14 +27,9 @@ const Publicaciones = () => {
     setLike(prevLike => ({ ...prevLike, [idPublicacion]: !prevLike[idPublicacion] }));
     dispatch(traerPublicaciones());
   }
-  console.log("ssss",like);
-  console.log("nuevosComentarios",nuevosComentarios);
-  console.log("comentariosVisibles",comentariosVisibles);
-  //console.log("bbb",userByID);
 
   const abrirModalLikes = (idPublicacion) => {
     setPublicacionMostrandoLikes(idPublicacion);
-    console.log(idPublicacion);
     //console.log(publicaciones[0].Emoticons.usuarioEmoticon);
     console.log(publicaciones[0].Emoticons[0].usuarioEmoticon.nombre)
     setModalActivo('modal2');
@@ -62,6 +54,12 @@ const Publicaciones = () => {
         const yaLeDiLike = (emoticons) => {
           return emoticons.some(emoticon => emoticon.usuarioEmoticon.id === userID);
         }
+        const handleKeyPress = (e, idPublicacion) => {
+          //valor de e.key será 'Enter' si presiono enter en mi teclado
+          if (e.key === 'Enter') {
+            handlePublicarComentario(idPublicacion);
+          }
+        };
 
         return (
           <div key={post.idPublicacion} className="bg-white shadow rounded-lg p-6" style={{ backgroundColor: post.colorFondo, color: post.colorTexto }}>
@@ -72,7 +70,12 @@ const Publicaciones = () => {
               <div className="space-y-2">
               {comentariosVisibles[post.idPublicacion] && (
                 <>
-                  <h3 className="text-lg font-semibold">Comentarios</h3>
+                  <button className="text-lg font-semibold"
+                   onClick={() => setComentariosVisibles({
+                  ...comentariosVisibles,
+                  [post.idPublicacion]: !comentariosVisibles[post.idPublicacion]
+                })}>Comentarios
+                </button>
                   {post.Comentarios.map((comentario) => (
                     <div
                       key={comentario.idComentario}
@@ -94,6 +97,7 @@ const Publicaciones = () => {
                         ...nuevosComentarios,
                         [post.idPublicacion]: e.target.value
                       })}
+                      onKeyPress={ (e) => handleKeyPress(e,post.idPublicacion)}
                       placeholder="Escribe un comentario..."
                     />
                     <button
@@ -107,7 +111,7 @@ const Publicaciones = () => {
               )}
             </div>
             <div className="flex items-center space-x-2">
-              <button className={`flex items-center space-x-1 ${yaLeDiLike(post.Emoticons) ? 'text-color2' : ''}`} onClick={() => { handleClickLike(post.idPublicacion); setPublicacionMostrandoLikes(post.idPublicacion) }}>
+              <button className={`flex items-center space-x-1 ${yaLeDiLike(post.Emoticons) ? 'text-color2' : 'text-color4'}`} onClick={() => { handleClickLike(post.idPublicacion); setPublicacionMostrandoLikes(post.idPublicacion) }}>
                 <FontAwesomeIcon icon={faThumbsUp} /> {/* Icono de "me gusta" */}
                 <span>{post.Emoticons.length}</span> {/* Cantidad de likes */}
               </button>
