@@ -64,9 +64,9 @@ const Publicaciones = () => {
         return (
           <div key={post.idPublicacion} className="bg-white shadow rounded-lg p-6" style={{ backgroundColor: post.colorFondo, color: post.colorTexto }}>
             <h2 className="text-2xl font-bold mb-2">{post.review}</h2>
-            <p className="text-sm text-gray-500 mb-2">Publicado por: {post.usuarioQuienPublico.nombre}</p> {/* Necesitarás reemplazar esto con el nombre del usuario cuando establezcas esa relación en tu backend */}
+            <p className="text-sm text-gray-500 mb-2">Publicado por: {post.usuarioQuienPublico.nombre || "usuario quien publico"}</p> {/* Necesitarás reemplazar esto con el nombre del usuario cuando establezcas esa relación en tu backend */}
             <p className="text-sm text-gray-500 mb-2">Fecha: {fechaLegible}</p>
-            {post.imagenURL && <img className="w-full h-64 object-cover mb-2 rounded" src={post.imagenURL} alt="Imagen de la publicación" />}
+            {post.imagenURL && <img className="w-full h-47 object-cover mb-2 rounded" src={post.imagenURL} alt="Imagen de la publicación" />}
               <div className="space-y-2">
               {comentariosVisibles[post.idPublicacion] && (
                 <>

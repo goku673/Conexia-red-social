@@ -9,6 +9,11 @@ module.exports = (sequelize) => {
       primaryKey: true,
       allowNull: false,
     },
+    googleId : {
+        type: DataTypes.STRING,
+        allowNUll: true,
+        unique:true,
+    },
     nombre: {
       type: DataTypes.STRING,
       allowNull: false,

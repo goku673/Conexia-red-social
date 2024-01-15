@@ -12,6 +12,8 @@ export const userLogin = createAsyncThunk('usuario/login', async ({email,passwor
 export const googleAuth  = createAsyncThunk('auth/google',  () => {
        const userCookie = Cookies.get('user');
        const myUser =  JSON.parse(userCookie);
+
+       console.log(" este es el usuario ",myUser)
        if(myUser){
            return  myUser
        }
@@ -72,7 +74,23 @@ const usuario = createSlice({
          },
          changeUsuarioConPublicacionesModal : (state,action) => {
              state.usuarioConPublicacionesModal = action.payload;
-         }
+         },
+         googleAuth2 : (state, action) => {
+            const userCookie = Cookies.get('user');
+            if (userCookie) {
+              try {
+                const myUser = JSON.parse(userCookie);
+                console.log(" este es el usuario ", myUser);
+                state.user = myUser;
+              } catch (error) {
+                console.error('Error parsing user cookie:', error);
+                state.user = null;
+              }
+            } else {
+              console.warn('No user cookie found');
+              state.user = null;
+            }
+           }
     },
     extraReducers : builder => {
           builder
@@ -135,5 +153,5 @@ export const {clearUserByName}  =usuario.actions;
 export const {resetStatusGetUsers} = usuario.actions;
 export const {changeUsuarioConPublicaciones} = usuario.actions;
 export const {changeUsuarioConPublicacionesModal}  = usuario.actions;
-
+export const {googleAuth2} = usuario.actions;
 export default usuario.reducer; 

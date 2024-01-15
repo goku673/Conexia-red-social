@@ -43,10 +43,10 @@ const PublicacionModal = ({ modalActivo, setModalActivo, publicaciones, publicac
                     </td>
                     <td className="py-3 px-6 text-center">
                       <button className="bg-color5 text-white px-2 py-1 rounded text-sm"
-                            onClick={() => { 
-                              dispatch(userById(emoticon.usuarioEmoticon.id));
+                            onClick={async() => { 
+                              await dispatch(userById(emoticon.usuarioEmoticon.id));
                                setModalActivo(null) ;
-                               dispatch(publicacionesPorIdUser(emoticon.usuarioEmoticon.id));
+                              await dispatch(publicacionesPorIdUser(emoticon.usuarioEmoticon.id));
                                dispatch(changeUsuarioConPublicacionesModal(true));
                                //console.log(emoticon.usuarioEmoticon);
                                }
