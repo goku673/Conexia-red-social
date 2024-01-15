@@ -1,19 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import conexia from '../../img/conexia.png';
-import { NavLink } from 'react-router-dom';
-import { userLogin,googleAuth} from '../Redux/slice';
-import { useDispatch } from 'react-redux';
+import { NavLink,useNavigate } from 'react-router-dom';
+import { userLogin,googleAuth, googleAuth2} from '../Redux/slice';
+import { useDispatch , useSelector} from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
 import { traerPublicaciones } from '../Redux/slicePublicaciones';
 
 const Login = () => {
-  const dispath = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const usuario = useSelector((state) => state.usuario)
  
@@ -25,20 +22,18 @@ const Login = () => {
     setPasswordShown(passwordShown ? false : true);
   };
 
- 
+  useEffect(() => {
+    dispatch(googleAuth2());
+  }, [dispatch]); 
 
-   useEffect(() => {
-      if(usuario.error){
-          console.log(usuario.error);
-          toast.error('Usuario no encontrado');
-      }else  if(usuario.user) {
-         console.log('todo correcto');
-         toast.success('inicio de sesion exitoso')
-          setTimeout ( () => { 
-            navigate('/profile')
-          },4000);
-      }
-   },[usuario]);
+  useEffect(() => {
+    if (usuario.error) {
+      toast.error('Usuario no encontrado');
+    } else if (usuario.user) {
+      toast.success('Inicio de sesión exitoso');
+      navigate('/profile');
+    }
+  }, [usuario, navigate]);
 
   const validarError = ({ email, password }) => {
     let respuesta = '';
@@ -63,16 +58,14 @@ const Login = () => {
     if (validar) {
       toast.error(validar);
     } else {
-      await dispath(userLogin({ email, password }));
-       dispath(traerPublicaciones());
+      await dispatch(userLogin({ email, password }));
+      dispatch(traerPublicaciones());
     }
 
   }
 
-  const handleLoginGoogle = () => {
-      window.location.href = 'http://localhost:3007/auth/logGoogle';
-      dispath(googleAuth());
-      dispath(traerPublicaciones());
+  const handleLoginGoogle = async() => {
+     window.location.href = 'http://localhost:3007/auth/logGoogle';
   }
 
   return (

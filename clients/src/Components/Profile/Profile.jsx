@@ -16,11 +16,11 @@ const Profile = () => {
   const usuario = useSelector((state) => state.usuario);
   //const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  useEffect(() => {
-    if (!usuario.user) {
-      dispatch(googleAuth());
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (!usuario.user) {
+  //     dispatch(googleAuth());
+  //   }
+  // }, [])
   const [modalActivo, setModalActivo] = useState('');
 
   // Convertir la fecha de registro a un formato más legible
@@ -42,8 +42,8 @@ const Profile = () => {
           className="relative -top-20 w-32 h-32 mx-auto rounded-full border-4 border-color1"
         />
       </div>
-      <h2 className="mt-16 mb-4 text-2xl font-bold text-center text-color5">{usuario.user.nombre}</h2>
-      <p className="text-center text-color2">{usuario.user.email}</p>
+      <h2 className="mt-16 mb-4 text-2xl font-bold text-center text-color5">{usuario.user.nombre || nombre}</h2>
+      <p className="text-center text-color2">{usuario.user.email || "email"}</p>
       <p className="px-6 mt-4 mb-8 text-center text-color3">{usuario.user.resenia || "No hay reseña disponible"}</p>
       <p className="text-center text-xs text-color3">Se unió el {fechaRegistro}</p>
 

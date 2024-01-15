@@ -20,9 +20,11 @@ passportSetup.use(
 
      async(accessToken, refreshToken, profile, done) => {
        // aqui busco o creo un nuevo usuario en mi base de datos MySQL
+         console.log("miau",profile);
+         console.log("miau2",done);
        const [user,created] = await Usuario.findOrCreate({
          where: {
-           id: profile.id 
+           googleId: profile.id 
          },
          defaults: {
            nombre : profile.displayName,
@@ -30,7 +32,8 @@ passportSetup.use(
            imagenURL : profile.photos[0].value
          }
        });
-         return done(null,user);
+         
+       return done(null, user, { isNewUser: created });
 
      }
    )
